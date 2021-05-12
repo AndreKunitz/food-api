@@ -1,5 +1,15 @@
 spring:
+  devtools:
+    add-properties: false
   datasource:
-    url: jdbc:mysql://localhost/algafood?createDatabaseIfNotExist=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/food?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
     password: root
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
