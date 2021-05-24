@@ -1,22 +1,28 @@
 package me.andrekunitz.food.api.controller;
 
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.CREATED;
+
+import java.util.List;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
 import lombok.RequiredArgsConstructor;
-import me.andrekunitz.food.api.model.CuisineXmlWrapper;
 import me.andrekunitz.food.domain.exception.EntityInUseException;
 import me.andrekunitz.food.domain.exception.EntityNotFoundException;
 import me.andrekunitz.food.domain.model.Cuisine;
 import me.andrekunitz.food.domain.repository.CuisinesRepository;
 import me.andrekunitz.food.domain.service.CuisineRegistrationService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
 @RestController
 @RequestMapping("/cuisines")
@@ -29,11 +35,6 @@ public class CuisineController {
 	@GetMapping
 	public List<Cuisine> list() {
 		return cuisinesRepository.findAll();
-	}
-
-	@GetMapping(produces = APPLICATION_XML_VALUE)
-	public CuisineXmlWrapper listXml() {
-		return new CuisineXmlWrapper(cuisinesRepository.findAll());
 	}
 
 	@GetMapping("/{id}")
