@@ -1,13 +1,14 @@
 package me.andrekunitz.food.infrastructure.repository;
 
-import me.andrekunitz.food.domain.model.PaymentMethod;
 import me.andrekunitz.food.domain.model.State;
 import me.andrekunitz.food.domain.repository.StateRepository;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Component
 public class StateRepositoryImpl implements StateRepository {
 	@PersistenceContext
 	EntityManager manager;

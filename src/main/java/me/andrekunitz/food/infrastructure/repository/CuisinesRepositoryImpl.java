@@ -2,6 +2,7 @@ package me.andrekunitz.food.infrastructure.repository;
 
 import me.andrekunitz.food.domain.model.Cuisine;
 import me.andrekunitz.food.domain.repository.CuisinesRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +34,12 @@ public class CuisinesRepositoryImpl implements CuisinesRepository {
 
     @Transactional
     @Override
-    public void remove(Cuisine cuisine) {
-        cuisine = findById(cuisine.getId());
+    public void remove(Long id) {
+        var cuisine = findById(id);
+        if (cuisine == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
+
         manager.remove(cuisine);
     }
 }

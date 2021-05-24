@@ -2,11 +2,13 @@ package me.andrekunitz.food.infrastructure.repository;
 
 import me.andrekunitz.food.domain.model.Permission;
 import me.andrekunitz.food.domain.repository.PermissionRepository;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Component
 public class PermissionRepositoryImpl implements PermissionRepository {
 	@PersistenceContext
 	private EntityManager manager;

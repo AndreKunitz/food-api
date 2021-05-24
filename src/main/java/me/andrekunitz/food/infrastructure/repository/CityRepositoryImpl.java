@@ -2,11 +2,13 @@ package me.andrekunitz.food.infrastructure.repository;
 
 import me.andrekunitz.food.domain.model.City;
 import me.andrekunitz.food.domain.repository.CityRepository;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Component
 public class CityRepositoryImpl implements CityRepository {
 	@PersistenceContext
 	private EntityManager manager;

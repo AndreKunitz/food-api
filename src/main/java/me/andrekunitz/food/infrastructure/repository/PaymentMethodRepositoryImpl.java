@@ -2,11 +2,13 @@ package me.andrekunitz.food.infrastructure.repository;
 
 import me.andrekunitz.food.domain.model.PaymentMethod;
 import me.andrekunitz.food.domain.repository.PaymentMethodRepository;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Component
 public class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
 	@PersistenceContext
 	private EntityManager manager;

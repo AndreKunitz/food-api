@@ -1,6 +1,5 @@
 package me.andrekunitz.food.domain.repository;
 
-import me.andrekunitz.food.domain.model.Permission;
 import me.andrekunitz.food.domain.model.State;
 
 import java.util.List;
