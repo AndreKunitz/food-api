@@ -2,7 +2,10 @@ package me.andrekunitz.food.infrastructure.repository;
 
 import me.andrekunitz.food.domain.model.State;
 import me.andrekunitz.food.domain.repository.StateRepository;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,14 +27,20 @@ public class StateRepositoryImpl implements StateRepository {
 		return manager.find(State.class, id);
 	}
 
+	@Transactional
 	@Override
 	public State save(State state) {
 		return manager.merge(state);
 	}
 
+	@Transactional
 	@Override
-	public void remove(State state) {
-		state = findById(state.getId());
+	public void remove(Long id) {
+		var state = findById(id);
+		if (state == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+
 		manager.remove(state);
 	}
 }

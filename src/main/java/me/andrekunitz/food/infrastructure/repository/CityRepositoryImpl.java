@@ -2,7 +2,10 @@ package me.andrekunitz.food.infrastructure.repository;
 
 import me.andrekunitz.food.domain.model.City;
 import me.andrekunitz.food.domain.repository.CityRepository;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,14 +27,20 @@ public class CityRepositoryImpl implements CityRepository {
 		return manager.find(City.class, id);
 	}
 
+	@Transactional
 	@Override
 	public City save(City city) {
 		return manager.merge(city);
 	}
 
+	@Transactional
 	@Override
-	public void remove(City city) {
-		city = findById(city.getId());
+	public void remove(Long id) {
+		var city = findById(id);
+		if (city == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+
 		manager.remove(city);
 	}
 }

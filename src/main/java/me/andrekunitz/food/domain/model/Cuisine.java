@@ -19,7 +19,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 public class Cuisine {
 
-    @JsonIgnore
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = IDENTITY)

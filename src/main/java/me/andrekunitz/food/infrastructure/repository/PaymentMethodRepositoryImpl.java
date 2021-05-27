@@ -3,6 +3,7 @@ package me.andrekunitz.food.infrastructure.repository;
 import me.andrekunitz.food.domain.model.PaymentMethod;
 import me.andrekunitz.food.domain.repository.PaymentMethodRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,11 +25,13 @@ public class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
 		return manager.find(PaymentMethod.class, id);
 	}
 
+	@Transactional
 	@Override
 	public PaymentMethod save(PaymentMethod paymentMethod) {
 		return manager.merge(paymentMethod);
 	}
 
+	@Transactional
 	@Override
 	public void remove(PaymentMethod paymentMethod) {
 		paymentMethod = findById(paymentMethod.getId());

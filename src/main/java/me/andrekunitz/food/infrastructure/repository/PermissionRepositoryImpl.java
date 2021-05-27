@@ -3,6 +3,7 @@ package me.andrekunitz.food.infrastructure.repository;
 import me.andrekunitz.food.domain.model.Permission;
 import me.andrekunitz.food.domain.repository.PermissionRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,11 +25,13 @@ public class PermissionRepositoryImpl implements PermissionRepository {
 		return manager.find(Permission.class, id);
 	}
 
+	@Transactional
 	@Override
 	public Permission save(Permission permission) {
 		return manager.merge(permission);
 	}
 
+	@Transactional
 	@Override
 	public void remove(Permission permission) {
 		permission = findById(permission.getId());
