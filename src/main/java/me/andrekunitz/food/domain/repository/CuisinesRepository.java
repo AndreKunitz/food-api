@@ -4,12 +4,11 @@ import me.andrekunitz.food.domain.model.Cuisine;
 
 import java.util.List;
 
-public interface CuisinesRepository {
-    List<Cuisine> findAll();
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    Cuisine findById(Long id);
+@Repository
+public interface CuisinesRepository extends JpaRepository<Cuisine, Long> {
 
-    Cuisine save(Cuisine cuisine);
-
-    void remove(Long id);
+//    List<Cuisine> findByName(String name);
 }

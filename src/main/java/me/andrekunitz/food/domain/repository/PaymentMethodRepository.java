@@ -1,15 +1,11 @@
 package me.andrekunitz.food.domain.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import me.andrekunitz.food.domain.model.PaymentMethod;
 
-import java.util.List;
+@Repository
+public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, Long> {
 
-public interface PaymentMethodRepository {
-	List<PaymentMethod> findAll();
-
-	PaymentMethod findById(Long id);
-
-	PaymentMethod save(PaymentMethod paymentMethod);
-
-	void remove(PaymentMethod paymentMethod);
 }

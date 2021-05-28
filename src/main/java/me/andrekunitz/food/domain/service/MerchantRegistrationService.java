@@ -19,12 +19,9 @@ public class MerchantRegistrationService {
 
 	public Merchant save(Merchant merchant) {
 		Long cuisineId = merchant.getCuisine().getId();
-		Cuisine cuisine = cuisinesRepository.findById(cuisineId);
 
-		if (cuisine == null) {
-			throw new EntityNotFoundException(
-					String.format("There is no Cuisine with id %d.", cuisineId));
-		}
+		Cuisine cuisine = cuisinesRepository.findById(cuisineId).orElseThrow(() -> new EntityNotFoundException(
+				String.format("There is no Cuisine with id %d.", cuisineId)));
 
 		merchant.setCuisine(cuisine);
 

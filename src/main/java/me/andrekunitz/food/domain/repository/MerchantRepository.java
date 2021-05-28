@@ -1,15 +1,11 @@
 package me.andrekunitz.food.domain.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import me.andrekunitz.food.domain.model.Merchant;
 
-import java.util.List;
+@Repository
+public interface MerchantRepository extends JpaRepository<Merchant, Long> {
 
-public interface MerchantRepository {
-    List<Merchant> findAll();
-
-    Merchant findById(Long id);
-
-    Merchant save(Merchant merchant);
-
-    void remove(Merchant merchant);
 }

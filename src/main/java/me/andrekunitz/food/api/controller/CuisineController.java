@@ -37,11 +37,16 @@ public class CuisineController {
 		return cuisinesRepository.findAll();
 	}
 
+//	@GetMapping("/by-name")
+//	public List<Cuisine> list(@RequestParam String name) {
+//		return cuisinesRepository.findByName(name);
+//	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Cuisine> search(@PathVariable Long id) {
 		var cuisine = cuisinesRepository.findById(id);
-		if(cuisine != null) {
-			return ResponseEntity.ok(cuisine);
+		if(cuisine.isPresent()) {
+			return ResponseEntity.ok(cuisine.get());
 		}
 
 		return ResponseEntity.notFound().build();
@@ -57,10 +62,10 @@ public class CuisineController {
 	public ResponseEntity<Cuisine> update(@PathVariable Long id,
 	                                      @RequestBody Cuisine cuisine) {
 		var currentCuisine = cuisinesRepository.findById(id);
-		if (currentCuisine != null) {
-			BeanUtils.copyProperties(cuisine, currentCuisine, "id");
-			cuisineRegistration.save(currentCuisine);
-			return ResponseEntity.ok(currentCuisine);
+		if (currentCuisine.isPresent()) {
+			BeanUtils.copyProperties(cuisine, currentCuisine.get(), "id");
+			var savedCuisine = cuisineRegistration.save(currentCuisine.get());
+			return ResponseEntity.ok(savedCuisine);
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -70,6 +75,7 @@ public class CuisineController {
 		try {
 			cuisineRegistration.remove(id);
 			return ResponseEntity.noContent().build();
+
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		} catch (EntityInUseException e) {

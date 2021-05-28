@@ -41,8 +41,8 @@ public class StateController {
 	public ResponseEntity<State> search(@PathVariable Long id) {
 		var state = stateRepository.findById(id);
 
-		if (state != null) {
-			return ResponseEntity.ok(state);
+		if (state.isPresent()) {
+			return ResponseEntity.ok(state.get());
 		}
 
 		return ResponseEntity.notFound().build();
@@ -58,7 +58,7 @@ public class StateController {
 	public ResponseEntity<State> update(@PathVariable Long id,
 	                                    @RequestBody State state) {
 
-		var currentState = stateRepository.findById(id);
+		var currentState = stateRepository.findById(id).orElse(null);
 
 		if (currentState != null) {
 			BeanUtils.copyProperties(state, currentState, "id");

@@ -6,7 +6,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,8 +40,8 @@ public class CityController {
 	public ResponseEntity<City> search(@PathVariable Long id) {
 		var city = cityRepository.findById(id);
 
-		if (city != null) {
-			return ResponseEntity.ok(city);
+		if (city.isPresent()) {
+			return ResponseEntity.ok(city.get());
 		}
 
 		return ResponseEntity.notFound().build();
@@ -66,7 +65,7 @@ public class CityController {
 	                                @RequestBody City city) {
 
 		try {
-			City currentCity = cityRepository.findById(id);
+			City currentCity = cityRepository.findById(id).orElse(null);
 
 			if (currentCity != null) {
 				BeanUtils.copyProperties(city, currentCity, "id");

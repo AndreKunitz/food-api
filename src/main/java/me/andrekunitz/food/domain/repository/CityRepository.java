@@ -1,15 +1,11 @@
 package me.andrekunitz.food.domain.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import me.andrekunitz.food.domain.model.City;
 
-import java.util.List;
+@Repository
+public interface CityRepository extends JpaRepository<City, Long> {
 
-public interface CityRepository {
-	List<City> findAll();
-
-	City findById(Long id);
-
-	City save(City city);
-
-	void remove(Long id);
 }

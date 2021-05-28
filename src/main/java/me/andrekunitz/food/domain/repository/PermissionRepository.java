@@ -1,16 +1,12 @@
 package me.andrekunitz.food.domain.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import me.andrekunitz.food.domain.model.Permission;
 
-import java.util.List;
+@Repository
+public interface PermissionRepository extends JpaRepository<Permission, Long> {
 
-public interface PermissionRepository {
-	List<Permission> findAll();
-
-	Permission findById(Long id);
-
-	Permission save(Permission permission);
-
-	void remove(Permission permission);
 }
 

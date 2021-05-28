@@ -21,12 +21,8 @@ public class CityRegistrationService {
 
 	public City save(City city) {
 		Long stateId = city.getState().getId();
-		State state = stateRepository.findById(stateId);
-
-		if (state == null) {
-			throw new EntityNotFoundException(
-					String.format("Does not exist a state registered with an id %d.", stateId));
-		}
+		State state = stateRepository.findById(stateId).orElseThrow(() -> new EntityNotFoundException(
+				String.format("Does not exist a state registered with an id %d.", stateId)));
 
 		city.setState(state);
 
@@ -35,7 +31,7 @@ public class CityRegistrationService {
 
 	public void remove(Long id) {
 		try {
-			cityRepository.remove(id);
+			cityRepository.deleteById(id);
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntityNotFoundException(

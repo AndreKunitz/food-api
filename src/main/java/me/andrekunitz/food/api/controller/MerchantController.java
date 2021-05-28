@@ -42,8 +42,8 @@ public class MerchantController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Merchant> search(@PathVariable Long id) {
 		 var merchant = merchantRepository.findById(id);
-		 if (merchant != null) {
-		 	return ResponseEntity.ok(merchant);
+		 if (merchant.isPresent()) {
+		 	return ResponseEntity.ok(merchant.get());
 		 }
 		 return ResponseEntity.notFound().build();
 	}
@@ -64,7 +64,7 @@ public class MerchantController {
 	public ResponseEntity<?> update(@PathVariable Long id,
 	                                @RequestBody Merchant merchant) {
 		try {
-			var currentMerchant = merchantRepository.findById(id);
+			var currentMerchant = merchantRepository.findById(id).orElse(null);
 
 			if (currentMerchant != null) {
 				BeanUtils.copyProperties(merchant, currentMerchant, "id");
@@ -74,6 +74,7 @@ public class MerchantController {
 			}
 
 			return ResponseEntity.notFound().build();
+
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.badRequest()
 					.body(e.getMessage());
@@ -84,7 +85,7 @@ public class MerchantController {
 	public ResponseEntity<?> partialUpdate(@PathVariable Long id,
 	                                       @RequestBody Map<String, Object> fields) {
 
-		var currentMerchant = merchantRepository.findById(id);
+		var currentMerchant = merchantRepository.findById(id).orElse(null);
 
 		if (currentMerchant == null) {
 			return ResponseEntity.notFound().build();
