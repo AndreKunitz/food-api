@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
@@ -36,11 +37,6 @@ public class CuisineController {
 	public List<Cuisine> list() {
 		return cuisinesRepository.findAll();
 	}
-
-//	@GetMapping("/by-name")
-//	public List<Cuisine> list(@RequestParam String name) {
-//		return cuisinesRepository.findByName(name);
-//	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Cuisine> search(@PathVariable Long id) {
@@ -81,5 +77,20 @@ public class CuisineController {
 		} catch (EntityInUseException e) {
 			return ResponseEntity.status(CONFLICT).build();
 		}
+	}
+
+	@GetMapping("by-name")
+	public List<Cuisine> cuisinesByName(String name) {
+		return cuisinesRepository.findAllByNameContaining(name);
+	}
+
+	@GetMapping("unique-by-name")
+	public Optional<Cuisine> cuisineByName(String name) {
+		return cuisinesRepository.findByName(name);
+	}
+
+	@GetMapping("exists")
+	public boolean cuisineExists(String name) {
+		return cuisinesRepository.existsByName(name);
 	}
 }

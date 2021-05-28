@@ -2,9 +2,10 @@ package me.andrekunitz.food.api.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
-import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
@@ -107,5 +108,32 @@ public class MerchantController {
 
 			ReflectionUtils.setField(field, destinationMerchant, newValue);
 		});
+	}
+
+	@GetMapping("/by-delivery-fee")
+	public List<Merchant> merchantsByDeliveryFee(
+			BigDecimal initialFee, BigDecimal finalFee) {
+		return merchantRepository.queryByDeliveryFeeBetween(initialFee, finalFee);
+	}
+
+	@GetMapping("/by-name-and-cuisine")
+	public List<Merchant> merchantsByNameAndCuisine(
+			String name, Long cuisineId) {
+		return merchantRepository.findByNameContainingAndCuisineId(name, cuisineId);
+	}
+
+	@GetMapping("/first-by-name")
+	public Optional<Merchant> merchantsFirstByName(String name) {
+		return merchantRepository.findFirstMerchantByNameContaining(name);
+	}
+
+	@GetMapping("/top2-por-nome")
+	public List<Merchant> merchantsTop2ByName(String name) {
+		return merchantRepository.findTop2ByNameContaining(name);
+	}
+
+	@GetMapping("/count-by-cuisine")
+	public int merchantsCountByCuisine(Long cuisineId) {
+		return merchantRepository.countByCuisineId(cuisineId);
 	}
 }
