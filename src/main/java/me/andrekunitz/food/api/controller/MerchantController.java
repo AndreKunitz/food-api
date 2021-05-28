@@ -119,7 +119,7 @@ public class MerchantController {
 	@GetMapping("/by-name-and-cuisine")
 	public List<Merchant> merchantsByNameAndCuisine(
 			String name, Long cuisineId) {
-		return merchantRepository.findByNameContainingAndCuisineId(name, cuisineId);
+		return merchantRepository.findByNameAndCuisine(name, cuisineId);
 	}
 
 	@GetMapping("/first-by-name")
@@ -135,5 +135,13 @@ public class MerchantController {
 	@GetMapping("/count-by-cuisine")
 	public int merchantsCountByCuisine(Long cuisineId) {
 		return merchantRepository.countByCuisineId(cuisineId);
+	}
+
+	@GetMapping("by-name-and-fee")
+	public List<Merchant> merchantsByNameAndFee(String name,
+	                                            BigDecimal initialFee,
+	                                            BigDecimal finalFee) {
+
+		return merchantRepository.find(name, initialFee, finalFee);
 	}
 }
