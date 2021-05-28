@@ -79,17 +79,17 @@ public class CuisineController {
 		}
 	}
 
-	@GetMapping("by-name")
+	@GetMapping("/by-name")
 	public List<Cuisine> cuisinesByName(String name) {
 		return cuisinesRepository.findAllByNameContaining(name);
 	}
 
-	@GetMapping("unique-by-name")
+	@GetMapping("/unique-by-name")
 	public Optional<Cuisine> cuisineByName(String name) {
 		return cuisinesRepository.findByName(name);
 	}
 
-	@GetMapping("exists")
+	@GetMapping("/exists")
 	public boolean cuisineExists(String name) {
 		return cuisinesRepository.existsByName(name);
 	}
