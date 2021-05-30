@@ -1,12 +1,19 @@
 package me.andrekunitz.food.infrastructure.repository;
 
+import static org.springframework.util.StringUtils.*;
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StreamUtils;
@@ -27,29 +34,25 @@ public class MerchantRepositoryImpl implements MerchantRepositoryQueries {
 	                           BigDecimal initialFee,
 	                           BigDecimal finalFee) {
 
-		var jpql = new StringBuilder();
-		jpql.append("from Merchant where 0=0 ");
+		var builder = manager.getCriteriaBuilder();
+		var criteria = builder.createQuery(Merchant.class);
+		var root = criteria.from(Merchant.class);
 
-		var parameters = new HashMap<String, Object>();
+		var predicates = new ArrayList<Predicate>();
 
-		if (StringUtils.hasLength(name)) {
-			jpql.append("and name like :name ");
-			parameters.put("name", "%" + name + "%");
+		if (hasText(name)) {
+			predicates.add(builder.like(root.get("name"), "%" + name + "%"));
 		}
-
 		if (initialFee != null) {
-			jpql.append("and deliveryFee >= :initialFee ");
-			parameters.put("initialFee", initialFee);
+			predicates.add(builder.greaterThanOrEqualTo(root.get("deliveryFee"), initialFee));
 		}
-
 		if (finalFee != null) {
-			jpql.append("and deliveryFee <= :finalFee ");
-			parameters.put("finalFee", finalFee);
+			predicates.add(builder.lessThanOrEqualTo(root.get("deliveryFee"), finalFee));
 		}
 
-		var query = manager.createQuery(jpql.toString(), Merchant.class);
-		parameters.forEach((key, value) -> query.setParameter(key, value));
+		criteria.where(predicates.toArray(new Predicate[0]));
 
+		var query = manager.createQuery(criteria);
 		return query.getResultList();
 	}
 }
