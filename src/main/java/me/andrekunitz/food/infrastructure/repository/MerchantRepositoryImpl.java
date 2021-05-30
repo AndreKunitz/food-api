@@ -1,5 +1,7 @@
 package me.andrekunitz.food.infrastructure.repository;
 
+import static me.andrekunitz.food.infrastructure.repository.specification.MerchantSpecification.withFreeDelivery;
+import static me.andrekunitz.food.infrastructure.repository.specification.MerchantSpecification.withSimilarName;
 import static org.springframework.util.StringUtils.*;
 
 import java.math.BigDecimal;
@@ -15,10 +17,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
+import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.domain.model.Merchant;
 import me.andrekunitz.food.domain.repository.MerchantRepository;
 import me.andrekunitz.food.domain.repository.MerchantRepositoryQueries;
@@ -28,6 +33,9 @@ public class MerchantRepositoryImpl implements MerchantRepositoryQueries {
 
 	@PersistenceContext
 	private EntityManager manager;
+
+	@Autowired @Lazy
+	private MerchantRepository merchantRepository;
 
 	@Override
 	public List<Merchant> find(String name,
@@ -54,5 +62,9 @@ public class MerchantRepositoryImpl implements MerchantRepositoryQueries {
 
 		var query = manager.createQuery(criteria);
 		return query.getResultList();
+	}
+
+	public List<Merchant> findWithFreeDelivery(String name) {
+		return merchantRepository.findAll(withFreeDelivery().and(withSimilarName(name)));
 	}
 }

@@ -144,4 +144,9 @@ public class MerchantController {
 
 		return merchantRepository.find(name, initialFee, finalFee);
 	}
+
+	@GetMapping("/free-delivery")
+	public List<Merchant> merchantsWithFreeDelivery(String name) {
+		return merchantRepository.findWithFreeDelivery(name);
+	}
 }

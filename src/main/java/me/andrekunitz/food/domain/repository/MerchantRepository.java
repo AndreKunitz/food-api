@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Repository;
 import me.andrekunitz.food.domain.model.Merchant;
 
 @Repository
-public interface MerchantRepository extends JpaRepository<Merchant, Long>, MerchantRepositoryQueries {
+public interface MerchantRepository extends JpaRepository<Merchant, Long>,
+											MerchantRepositoryQueries,
+											JpaSpecificationExecutor<Merchant> {
 
 	List<Merchant> queryByDeliveryFeeBetween(BigDecimal initialFee, BigDecimal finalFee);
 
@@ -23,5 +26,5 @@ public interface MerchantRepository extends JpaRepository<Merchant, Long>, Merch
 
 	List<Merchant> findTop2ByNameContaining(String name);
 
-	int countByCuisineId(Long cozinha);
+	int countByCuisineId(Long cuisine);
 }

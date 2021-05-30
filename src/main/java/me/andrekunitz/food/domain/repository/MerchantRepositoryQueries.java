@@ -10,4 +10,6 @@ public interface MerchantRepositoryQueries {
 	List<Merchant> find(String name,
 	                    BigDecimal initialFee,
 	                    BigDecimal finalFee);
+
+	List<Merchant> findWithFreeDelivery(String name);
 }
