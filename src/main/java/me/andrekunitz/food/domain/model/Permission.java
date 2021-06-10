@@ -10,6 +10,7 @@ import static javax.persistence.GenerationType.*;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Table(name="\"Permission\"")
 public class Permission {
 
 	@EqualsAndHashCode.Include

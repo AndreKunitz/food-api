@@ -17,6 +17,9 @@ public interface MerchantRepository extends JpaRepository<Merchant, Long>,
 											MerchantRepositoryQueries,
 											JpaSpecificationExecutor<Merchant> {
 
+	@Query("FROM Merchant m JOIN FETCH m.cuisine LEFT JOIN FETCH m.paymentMethods")
+	List<Merchant> findAll();
+
 	List<Merchant> queryByDeliveryFeeBetween(BigDecimal initialFee, BigDecimal finalFee);
 
 	@Query("FROM Merchant WHERE name LIKE CONCAT('%', :name, '%') AND cuisine.id = :id")

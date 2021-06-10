@@ -68,7 +68,8 @@ public class MerchantController {
 			var currentMerchant = merchantRepository.findById(id).orElse(null);
 
 			if (currentMerchant != null) {
-				BeanUtils.copyProperties(merchant, currentMerchant, "id");
+				BeanUtils.copyProperties(merchant, currentMerchant,
+						"id", "paymentMethods", "address", "registrationDate", "products");
 
 				currentMerchant = merchantRegistration.save(currentMerchant);
 				return ResponseEntity.ok(currentMerchant);

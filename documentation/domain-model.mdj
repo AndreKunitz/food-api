@@ -3372,13 +3372,13 @@
 										"$ref": "AAAAAAF5CYl+mH8XX+4="
 									},
 									"font": "Arial;13;0",
-									"left": 489,
-									"top": 368,
+									"left": 488,
+									"top": 376,
 									"width": 44.79541015625,
 									"height": 13,
 									"autoResize": true,
-									"alpha": -3.7211563865977553,
-									"distance": 65.73431371817918,
+									"alpha": -3.672622515412236,
+									"distance": 73.06161783043132,
 									"hostEdge": {
 										"$ref": "AAAAAAF5CYl+mH8bzV0="
 									},
@@ -3478,17 +3478,18 @@
 									"model": {
 										"$ref": "AAAAAAF5CYl+mH8Y6aI="
 									},
-									"visible": false,
 									"font": "Arial;13;0",
-									"left": 559,
-									"top": 371,
+									"left": 552,
+									"top": 376,
+									"width": 21.68359375,
 									"height": 13,
-									"alpha": -0.5235987755982988,
-									"distance": 25,
+									"alpha": -0.7229796216406942,
+									"distance": 22.67156809750927,
 									"hostEdge": {
 										"$ref": "AAAAAAF5CYl+mH8bzV0="
 									},
-									"edgePosition": 2
+									"edgePosition": 2,
+									"text": "0..1"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -3499,16 +3500,17 @@
 									"model": {
 										"$ref": "AAAAAAF5CYl+mH8ZrDw="
 									},
-									"visible": false,
 									"font": "Arial;13;0",
-									"left": 532,
-									"top": 258,
+									"left": 472,
+									"top": 248,
+									"width": 65.01904296875,
 									"height": 13,
-									"alpha": -0.5235987755982988,
-									"distance": 30,
+									"alpha": -1.2351577666432605,
+									"distance": 45.5411901469428,
 									"hostEdge": {
 										"$ref": "AAAAAAF5CYl+mH8bzV0="
-									}
+									},
+									"text": "-merchants"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -3921,12 +3923,12 @@
 										"$ref": "AAAAAAF5CZOovIbfYww="
 									},
 									"font": "Arial;13;0",
-									"left": 679,
-									"top": 479,
+									"left": 719,
+									"top": 487,
 									"width": 54.18994140625,
 									"height": 13,
-									"alpha": 1.418147749844805,
-									"distance": 13.152946437965905,
+									"alpha": 2.6167969960475475,
+									"distance": 43.9089968002003,
 									"hostEdge": {
 										"$ref": "AAAAAAF5CZOovYbj7yk="
 									},
@@ -4047,16 +4049,17 @@
 									"model": {
 										"$ref": "AAAAAAF5CZOovIbh4Oc="
 									},
-									"visible": false,
 									"font": "Arial;13;0",
-									"left": 657,
-									"top": 481,
+									"left": 640,
+									"top": 448,
+									"width": 61.78173828125,
 									"height": 13,
-									"alpha": -0.5235987755982988,
-									"distance": 30,
+									"alpha": 0.4489099753855753,
+									"distance": 42.04759208325728,
 									"hostEdge": {
 										"$ref": "AAAAAAF5CZOovYbj7yk="
-									}
+									},
+									"text": "-merchant"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -4195,12 +4198,12 @@
 										"$ref": "AAAAAAF5CZTJmYm4rbY="
 									},
 									"font": "Arial;13;0",
-									"left": 583,
+									"left": 607,
 									"top": 368,
 									"width": 104.05078125,
 									"height": 13,
-									"alpha": -3.1380995526273665,
-									"distance": 132.45754036671525,
+									"alpha": -2.98534309142998,
+									"distance": 117.88553770501282,
 									"hostEdge": {
 										"$ref": "AAAAAAF5CZTJmom8G5w="
 									},
@@ -5008,7 +5011,7 @@
 										"$ref": "AAAAAAF5CZ98V69UXvY="
 									},
 									"edgePosition": 1,
-									"text": "-customer"
+									"text": "-custumer"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -9196,7 +9199,7 @@
 								"reference": {
 									"$ref": "AAAAAAF49pBhWRMAsgw="
 								},
-								"navigable": false
+								"multiplicity": "0..1"
 							},
 							"end2": {
 								"_type": "UMLAssociationEnd",
@@ -9204,9 +9207,11 @@
 								"_parent": {
 									"$ref": "AAAAAAF5CYl+mH8XX+4="
 								},
+								"name": "merchants",
 								"reference": {
 									"$ref": "AAAAAAF49o2dBhLFl0s="
-								}
+								},
+								"visibility": "private"
 							},
 							"visibility": "private"
 						},
@@ -9557,7 +9562,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF5CWrZFHtOAw4="
 							},
-							"name": "customer",
+							"name": "custumer",
 							"end1": {
 								"_type": "UMLAssociationEnd",
 								"_id": "AAAAAAF5CZ98Vq9RRMg=",
@@ -9950,10 +9955,11 @@
 								"_parent": {
 									"$ref": "AAAAAAF5CZOovIbfYww="
 								},
+								"name": "merchant",
 								"reference": {
 									"$ref": "AAAAAAF49pBhWRMAsgw="
 								},
-								"aggregation": "composite"
+								"visibility": "private"
 							},
 							"visibility": "private"
 						}

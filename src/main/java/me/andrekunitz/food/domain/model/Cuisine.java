@@ -1,17 +1,21 @@
 package me.andrekunitz.food.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @JsonRootName("cuisine")
 @Data
@@ -26,5 +30,9 @@ public class Cuisine {
 
     @Column(length = 30, nullable = false)
     private String name;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "cuisine")
+    private List<Merchant> merchants = new ArrayList<>();
 
 }
