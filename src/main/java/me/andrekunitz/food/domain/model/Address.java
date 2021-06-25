@@ -26,7 +26,7 @@ public class Address {
 	private String neighborhood;
 
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "adress_city_id")
+	@JoinColumn(name = "address_city_id")
 	private City city;
 
 }
