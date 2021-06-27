@@ -14,6 +14,9 @@ import me.andrekunitz.food.domain.repository.StateRepository;
 @RequiredArgsConstructor
 public class StateRegistrationService {
 
+	public static final String STATE_NOT_FOUND_MSG = "Does not exist a state registered with an id %d.";
+	public static final String STATE_IN_USE_MSG = "State with %d is in use and cannot be removed.";
+
 	private final StateRepository stateRepository;
 
 	public State save(State state) {
@@ -26,12 +29,17 @@ public class StateRegistrationService {
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntityNotFoundException(
-					String.format("Does not exist a state registered with an id %d.", id)
-			);
+					String.format(STATE_NOT_FOUND_MSG, id));
+
 		} catch (DataIntegrityViolationException e) {
 			throw new EntityInUseException(
-					String.format("State with %d is in use and cannot be removed.", id)
-			);
+					String.format(STATE_IN_USE_MSG, id));
 		}
+	}
+
+	public State fetchOrFail(Long id) {
+		return stateRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException(
+					String.format(STATE_NOT_FOUND_MSG, id)));
 	}
 }

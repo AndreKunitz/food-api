@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CuisineRegistrationService {
 
+	public static final String CUISINE_NOT_FOUND_MSG = "Does not exist a cuisine registered with an id %d.";
+	public static final String CUISINE_IN_USE = "Cuisine with %d is in use and cannot be removed.";
+
 	private final CuisinesRepository cuisinesRepository;
 
 	public Cuisine save(Cuisine cuisine) {
@@ -25,12 +28,17 @@ public class CuisineRegistrationService {
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntityNotFoundException(
-					String.format("Does not exist a cuisine registered with an id %d.", id)
-			);
+					String.format(CUISINE_NOT_FOUND_MSG, id));
+
 		} catch (DataIntegrityViolationException e) {
 			throw new EntityInUseException(
-					String.format("Cuisine with %d is in use and cannot be removed.", id)
-			);
+					String.format(CUISINE_IN_USE, id));
 		}
+	}
+
+	public Cuisine fetchOrFail(Long id) {
+		return cuisinesRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException(
+						String.format(CUISINE_NOT_FOUND_MSG, id)));
 	}
 }

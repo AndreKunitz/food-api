@@ -26,3 +26,6 @@ spring:
 #            scripts:
 #              action: create
 #              create-target: src/main/resources/ddl.sql
+server:
+  error:
+    include-message: always

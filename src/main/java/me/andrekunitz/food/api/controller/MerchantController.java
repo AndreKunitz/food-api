@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,12 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
-import me.andrekunitz.food.domain.exception.EntityNotFoundException;
+import me.andrekunitz.food.domain.exception.BusinessException;
+import me.andrekunitz.food.domain.exception.EntityInUseException;
 import me.andrekunitz.food.domain.model.Merchant;
 import me.andrekunitz.food.domain.repository.MerchantRepository;
 import me.andrekunitz.food.domain.service.MerchantRegistrationService;
@@ -33,7 +34,7 @@ import me.andrekunitz.food.domain.service.MerchantRegistrationService;
 public class MerchantController {
 
 	private final MerchantRepository merchantRepository;
-	private final MerchantRegistrationService merchantRegistration;
+	private final MerchantRegistrationService merchantRegistrationService;
 
 	@GetMapping
 	public List<Merchant> list() {
@@ -41,57 +42,41 @@ public class MerchantController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Merchant> search(@PathVariable Long id) {
-		 var merchant = merchantRepository.findById(id);
-		 if (merchant.isPresent()) {
-		 	return ResponseEntity.ok(merchant.get());
-		 }
-		 return ResponseEntity.notFound().build();
+	public Merchant search(@PathVariable Long id) {
+		return merchantRegistrationService.fetchOrFail(id);
 	}
 
 	@PostMapping
-	public ResponseEntity<?> add(@RequestBody Merchant merchant) {
+	@ResponseStatus(CREATED)
+	public Merchant add(@RequestBody Merchant merchant) {
 		try {
-			merchant = merchantRegistration.save(merchant);
-
-			return ResponseEntity.status(CREATED).body(merchant);
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.badRequest()
-					.body(e.getMessage());
+			return merchantRegistrationService.save(merchant);
+		} catch (EntityInUseException e) {
+			throw new BusinessException(e.getMessage());
 		}
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable Long id,
-	                                @RequestBody Merchant merchant) {
+	public Merchant update(@PathVariable Long id,
+	                       @RequestBody Merchant merchant
+	) {
+		var currentMerchant = merchantRegistrationService.fetchOrFail(id);
+		BeanUtils.copyProperties(merchant, currentMerchant,
+				"id", "paymentMethods", "address", "registrationDate", "products");
+
 		try {
-			var currentMerchant = merchantRepository.findById(id).orElse(null);
-
-			if (currentMerchant != null) {
-				BeanUtils.copyProperties(merchant, currentMerchant,
-						"id", "paymentMethods", "address", "registrationDate", "products");
-
-				currentMerchant = merchantRegistration.save(currentMerchant);
-				return ResponseEntity.ok(currentMerchant);
-			}
-
-			return ResponseEntity.notFound().build();
-
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.badRequest()
-					.body(e.getMessage());
+			return merchantRegistrationService.save(currentMerchant);
+		} catch (EntityInUseException e) {
+			throw new BusinessException(e.getMessage());
 		}
+
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<?> partialUpdate(@PathVariable Long id,
-	                                       @RequestBody Map<String, Object> fields) {
-
-		var currentMerchant = merchantRepository.findById(id).orElse(null);
-
-		if (currentMerchant == null) {
-			return ResponseEntity.notFound().build();
-		}
+	public Merchant partialUpdate(@PathVariable Long id,
+	                              @RequestBody Map<String, Object> fields
+	) {
+		var currentMerchant = merchantRegistrationService.fetchOrFail(id);
 		merge(fields, currentMerchant);
 
 		return update(id, currentMerchant);

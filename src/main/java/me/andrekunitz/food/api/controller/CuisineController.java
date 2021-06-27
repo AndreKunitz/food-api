@@ -1,13 +1,12 @@
 package me.andrekunitz.food.api.controller;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import me.andrekunitz.food.domain.exception.EntityInUseException;
-import me.andrekunitz.food.domain.exception.EntityNotFoundException;
 import me.andrekunitz.food.domain.model.Cuisine;
 import me.andrekunitz.food.domain.repository.CuisinesRepository;
 import me.andrekunitz.food.domain.service.CuisineRegistrationService;
@@ -31,7 +28,7 @@ import me.andrekunitz.food.domain.service.CuisineRegistrationService;
 public class CuisineController {
 
 	private final CuisinesRepository cuisinesRepository;
-	private final CuisineRegistrationService cuisineRegistration;
+	private final CuisineRegistrationService cuisineRegistrationService;
 
 	@GetMapping
 	public List<Cuisine> list() {
@@ -39,44 +36,29 @@ public class CuisineController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Cuisine> search(@PathVariable Long id) {
-		var cuisine = cuisinesRepository.findById(id);
-		if(cuisine.isPresent()) {
-			return ResponseEntity.ok(cuisine.get());
-		}
-
-		return ResponseEntity.notFound().build();
+	public Cuisine search(@PathVariable Long id) {
+		return cuisineRegistrationService.fetchOrFail(id);
 	}
 
 	@PostMapping
 	@ResponseStatus(CREATED)
 	public Cuisine add(@RequestBody Cuisine cuisine) {
-		return cuisineRegistration.save(cuisine);
+		return cuisineRegistrationService.save(cuisine);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Cuisine> update(@PathVariable Long id,
-	                                      @RequestBody Cuisine cuisine) {
-		var currentCuisine = cuisinesRepository.findById(id);
-		if (currentCuisine.isPresent()) {
-			BeanUtils.copyProperties(cuisine, currentCuisine.get(), "id");
-			var savedCuisine = cuisineRegistration.save(currentCuisine.get());
-			return ResponseEntity.ok(savedCuisine);
-		}
-		return ResponseEntity.notFound().build();
+	public Cuisine update(@PathVariable Long id,
+	                      @RequestBody Cuisine cuisine) {
+		var currentCuisine = cuisineRegistrationService.fetchOrFail(id);
+		BeanUtils.copyProperties(cuisine, currentCuisine, "id");
+
+		return cuisineRegistrationService.save(currentCuisine);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Cuisine> remove(@PathVariable Long id) {
-		try {
-			cuisineRegistration.remove(id);
-			return ResponseEntity.noContent().build();
-
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		} catch (EntityInUseException e) {
-			return ResponseEntity.status(CONFLICT).build();
-		}
+	@ResponseStatus(NO_CONTENT)
+	public void remove(@PathVariable Long id) {
+		cuisineRegistrationService.remove(id);
 	}
 
 	@GetMapping("/by-name")
