@@ -5,7 +5,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(NOT_FOUND)
-public class EntityNotFoundException extends RuntimeException {
+public abstract class EntityNotFoundException extends BusinessException {
 
 	public EntityNotFoundException(String message) {
 		super(message);

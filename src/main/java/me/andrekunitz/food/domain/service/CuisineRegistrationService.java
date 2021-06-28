@@ -1,19 +1,19 @@
 package me.andrekunitz.food.domain.service;
 
-import lombok.RequiredArgsConstructor;
-import me.andrekunitz.food.domain.exception.EntityInUseException;
-import me.andrekunitz.food.domain.exception.EntityNotFoundException;
-import me.andrekunitz.food.domain.model.Cuisine;
-import me.andrekunitz.food.domain.repository.CuisinesRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import me.andrekunitz.food.domain.exception.CuisineNotFoundException;
+import me.andrekunitz.food.domain.exception.EntityInUseException;
+import me.andrekunitz.food.domain.model.Cuisine;
+import me.andrekunitz.food.domain.repository.CuisinesRepository;
 
 @Service
 @RequiredArgsConstructor
 public class CuisineRegistrationService {
 
-	public static final String CUISINE_NOT_FOUND_MSG = "Does not exist a cuisine registered with an id %d.";
 	public static final String CUISINE_IN_USE = "Cuisine with %d is in use and cannot be removed.";
 
 	private final CuisinesRepository cuisinesRepository;
@@ -27,8 +27,7 @@ public class CuisineRegistrationService {
 			cuisinesRepository.deleteById(id);
 
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntityNotFoundException(
-					String.format(CUISINE_NOT_FOUND_MSG, id));
+			throw new CuisineNotFoundException(id);
 
 		} catch (DataIntegrityViolationException e) {
 			throw new EntityInUseException(
@@ -38,7 +37,6 @@ public class CuisineRegistrationService {
 
 	public Cuisine fetchOrFail(Long id) {
 		return cuisinesRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException(
-						String.format(CUISINE_NOT_FOUND_MSG, id)));
+				.orElseThrow(() -> new CuisineNotFoundException(id));
 	}
 }

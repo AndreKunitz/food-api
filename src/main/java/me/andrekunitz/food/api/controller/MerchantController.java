@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.domain.exception.BusinessException;
+import me.andrekunitz.food.domain.exception.CuisineNotFoundException;
 import me.andrekunitz.food.domain.exception.EntityInUseException;
 import me.andrekunitz.food.domain.model.Merchant;
 import me.andrekunitz.food.domain.repository.MerchantRepository;
@@ -51,7 +52,7 @@ public class MerchantController {
 	public Merchant add(@RequestBody Merchant merchant) {
 		try {
 			return merchantRegistrationService.save(merchant);
-		} catch (EntityInUseException e) {
+		} catch (CuisineNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
 	}
@@ -66,7 +67,7 @@ public class MerchantController {
 
 		try {
 			return merchantRegistrationService.save(currentMerchant);
-		} catch (EntityInUseException e) {
+		} catch (CuisineNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
 

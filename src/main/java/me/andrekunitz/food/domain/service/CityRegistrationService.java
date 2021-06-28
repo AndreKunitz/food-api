@@ -5,8 +5,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import me.andrekunitz.food.domain.exception.CityNotFoundException;
 import me.andrekunitz.food.domain.exception.EntityInUseException;
-import me.andrekunitz.food.domain.exception.EntityNotFoundException;
 import me.andrekunitz.food.domain.model.City;
 import me.andrekunitz.food.domain.repository.CityRepository;
 
@@ -14,7 +14,6 @@ import me.andrekunitz.food.domain.repository.CityRepository;
 @RequiredArgsConstructor
 public class CityRegistrationService {
 
-	public static final String CITY_NOT_FOUND_MSG = "Does not exist a city registered with an id %d.";
 	public static final String CITY_IN_USE_MSG = "City with %d is in use and cannot be removed.";
 
 	private final CityRepository cityRepository;
@@ -32,8 +31,7 @@ public class CityRegistrationService {
 			cityRepository.deleteById(id);
 
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntityNotFoundException(
-					String.format(CITY_NOT_FOUND_MSG, id));
+			throw new CityNotFoundException(id);
 
 		} catch (DataIntegrityViolationException e) {
 			throw new EntityInUseException(
@@ -43,8 +41,6 @@ public class CityRegistrationService {
 
 	public City fetchOrFail(Long id) {
 		return cityRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException(
-						String.format(CITY_NOT_FOUND_MSG, id))
-		);
+				.orElseThrow(() -> new CityNotFoundException(id));
 	}
 }

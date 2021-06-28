@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.domain.exception.BusinessException;
-import me.andrekunitz.food.domain.exception.EntityNotFoundException;
+import me.andrekunitz.food.domain.exception.StateNotFoundException;
 import me.andrekunitz.food.domain.model.City;
 import me.andrekunitz.food.domain.repository.CityRepository;
 import me.andrekunitz.food.domain.service.CityRegistrationService;
@@ -46,8 +46,8 @@ public class CityController {
 	public City add(@RequestBody City city) {
 		try {
 			return cityRegistrationService.save(city);
-		} catch (EntityNotFoundException e) {
-			throw new BusinessException(e.getMessage());
+		} catch (StateNotFoundException e) {
+			throw new BusinessException(e.getMessage(), e);
 		}
 	}
 
@@ -60,8 +60,8 @@ public class CityController {
 
 		try {
 			return cityRegistrationService.save(currentCity);
-		} catch (EntityNotFoundException e) {
-			throw new BusinessException(e.getMessage());
+		} catch (StateNotFoundException e) {
+			throw new BusinessException(e.getMessage(), e);
 		}
 	}
 

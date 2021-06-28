@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.domain.exception.EntityInUseException;
-import me.andrekunitz.food.domain.exception.EntityNotFoundException;
+import me.andrekunitz.food.domain.exception.StateNotFoundException;
 import me.andrekunitz.food.domain.model.State;
 import me.andrekunitz.food.domain.repository.StateRepository;
 
@@ -14,7 +14,6 @@ import me.andrekunitz.food.domain.repository.StateRepository;
 @RequiredArgsConstructor
 public class StateRegistrationService {
 
-	public static final String STATE_NOT_FOUND_MSG = "Does not exist a state registered with an id %d.";
 	public static final String STATE_IN_USE_MSG = "State with %d is in use and cannot be removed.";
 
 	private final StateRepository stateRepository;
@@ -28,8 +27,7 @@ public class StateRegistrationService {
 			stateRepository.deleteById(id);
 
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntityNotFoundException(
-					String.format(STATE_NOT_FOUND_MSG, id));
+			throw new StateNotFoundException(id);
 
 		} catch (DataIntegrityViolationException e) {
 			throw new EntityInUseException(
@@ -39,7 +37,6 @@ public class StateRegistrationService {
 
 	public State fetchOrFail(Long id) {
 		return stateRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException(
-					String.format(STATE_NOT_FOUND_MSG, id)));
+				.orElseThrow(() -> new StateNotFoundException(id));
 	}
 }
