@@ -7,7 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -75,26 +81,37 @@ public class MerchantController {
 
 	@PatchMapping("/{id}")
 	public Merchant partialUpdate(@PathVariable Long id,
-	                              @RequestBody Map<String, Object> fields
+	                              @RequestBody Map<String, Object> fields,
+	                              HttpServletRequest request
 	) {
 		var currentMerchant = merchantRegistrationService.fetchOrFail(id);
-		merge(fields, currentMerchant);
+		merge(fields, currentMerchant, request);
 
 		return update(id, currentMerchant);
 	}
 
-	private void merge(Map<String, Object> originFields, Merchant destinationMerchant) {
-		var objectMapper = new ObjectMapper();
-		var originMerchant = objectMapper.convertValue(originFields, Merchant.class);
+	private void merge(Map<String, Object> originFields, Merchant destinationMerchant, HttpServletRequest request) {
+		var servletServerHttpRequest = new ServletServerHttpRequest(request);
 
-		originFields.forEach((key, value) -> {
-			var field = ReflectionUtils.findField(Merchant.class, key);
-			field.setAccessible(true);
+		try {
+			var objectMapper = new ObjectMapper();
+			objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
-			var newValue = ReflectionUtils.getField(field, originMerchant);
+			var originMerchant = objectMapper.convertValue(originFields, Merchant.class);
 
-			ReflectionUtils.setField(field, destinationMerchant, newValue);
-		});
+			originFields.forEach((key, value) -> {
+				var field = ReflectionUtils.findField(Merchant.class, key);
+				field.setAccessible(true);
+
+				var newValue = ReflectionUtils.getField(field, originMerchant);
+
+				ReflectionUtils.setField(field, destinationMerchant, newValue);
+			});
+		} catch (IllegalArgumentException e) {
+			Throwable rootCause = ExceptionUtils.getRootCause(e);
+			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, servletServerHttpRequest);
+		}
 	}
 
 	@GetMapping("/by-delivery-fee")
