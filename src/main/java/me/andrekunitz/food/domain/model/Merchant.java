@@ -1,22 +1,36 @@
 package me.andrekunitz.food.domain.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import static javax.persistence.GenerationType.IDENTITY;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.FetchType.*;
-import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import me.andrekunitz.food.Groups;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -28,14 +42,18 @@ public class Merchant {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @NotBlank(groups = Groups.MerchantRegistration.class)
     @Column(length = 30, nullable = false)
     private String name;
 
+    @PositiveOrZero(groups = Groups.MerchantRegistration.class)
     @Column(name = "delivery_fee", nullable = false)
     private BigDecimal deliveryFee;
 
 //    @JsonIgnore
 //    @JsonIgnoreProperties("hibernateLazyInitializer")
+    @Valid
+    @NotNull(groups = Groups.MerchantRegistration.class)
     @ManyToOne // (fetch = LAZY)
     @JoinColumn(name = "cuisine_id", nullable = false)
     private Cuisine cuisine;

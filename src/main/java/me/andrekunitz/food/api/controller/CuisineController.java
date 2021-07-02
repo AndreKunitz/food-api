@@ -6,6 +6,8 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +44,7 @@ public class CuisineController {
 
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public Cuisine add(@RequestBody Cuisine cuisine) {
+	public Cuisine add(@RequestBody @Valid Cuisine cuisine) {
 		return cuisineRegistrationService.save(cuisine);
 	}
 

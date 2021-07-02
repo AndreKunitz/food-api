@@ -10,12 +10,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.andrekunitz.food.Groups;
 
 @JsonRootName("cuisine")
 @Data
@@ -23,11 +26,13 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class Cuisine {
 
+    @NotNull(groups = Groups.MerchantRegistration.class)
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(length = 30, nullable = false)
     private String name;
 

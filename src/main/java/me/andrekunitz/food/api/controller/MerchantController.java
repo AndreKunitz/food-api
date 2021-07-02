@@ -8,12 +8,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,9 +30,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import me.andrekunitz.food.Groups;
 import me.andrekunitz.food.domain.exception.BusinessException;
 import me.andrekunitz.food.domain.exception.CuisineNotFoundException;
-import me.andrekunitz.food.domain.exception.EntityInUseException;
 import me.andrekunitz.food.domain.model.Merchant;
 import me.andrekunitz.food.domain.repository.MerchantRepository;
 import me.andrekunitz.food.domain.service.MerchantRegistrationService;
@@ -55,7 +57,7 @@ public class MerchantController {
 
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public Merchant add(@RequestBody Merchant merchant) {
+	public Merchant add(@RequestBody @Validated(Groups.MerchantRegistration.class) Merchant merchant) {
 		try {
 			return merchantRegistrationService.save(merchant);
 		} catch (CuisineNotFoundException e) {
