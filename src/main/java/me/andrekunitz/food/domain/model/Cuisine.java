@@ -26,7 +26,7 @@ import me.andrekunitz.food.Groups;
 @Entity
 public class Cuisine {
 
-    @NotNull(groups = Groups.MerchantRegistration.class)
+    @NotNull(groups = Groups.CuisineId.class)
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = IDENTITY)

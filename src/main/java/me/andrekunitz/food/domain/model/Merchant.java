@@ -19,9 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -42,18 +41,18 @@ public class Merchant {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NotBlank(groups = Groups.MerchantRegistration.class)
+    @NotBlank
     @Column(length = 30, nullable = false)
     private String name;
 
-    @PositiveOrZero(groups = Groups.MerchantRegistration.class)
+    @PositiveOrZero
     @Column(name = "delivery_fee", nullable = false)
     private BigDecimal deliveryFee;
 
 //    @JsonIgnore
 //    @JsonIgnoreProperties("hibernateLazyInitializer")
     @Valid
-    @NotNull(groups = Groups.MerchantRegistration.class)
+    @ConvertGroup(to = Groups.CuisineId.class)
     @ManyToOne // (fetch = LAZY)
     @JoinColumn(name = "cuisine_id", nullable = false)
     private Cuisine cuisine;
