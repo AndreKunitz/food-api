@@ -50,7 +50,7 @@ public class CuisineController {
 
 	@PutMapping("/{id}")
 	public Cuisine update(@PathVariable Long id,
-	                      @RequestBody Cuisine cuisine) {
+	                      @RequestBody @Valid Cuisine cuisine) {
 		var currentCuisine = cuisineRegistrationService.fetchOrFail(id);
 		BeanUtils.copyProperties(cuisine, currentCuisine, "id");
 

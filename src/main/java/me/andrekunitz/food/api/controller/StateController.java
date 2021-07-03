@@ -4,6 +4,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,13 +42,13 @@ public class StateController {
 
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public State add(@RequestBody State state) {
+	public State add(@RequestBody @Valid State state) {
 		return stateRegistrationService.save(state);
 	}
 
 	@PutMapping("/{id}")
 	public State update(@PathVariable Long id,
-	                    @RequestBody State state
+	                    @RequestBody @Valid State state
 	) {
 		var currentState = stateRegistrationService.fetchOrFail(id);
 		BeanUtils.copyProperties(state, currentState, "id");

@@ -5,6 +5,8 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +45,7 @@ public class CityController {
 
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public City add(@RequestBody City city) {
+	public City add(@RequestBody @Valid City city) {
 		try {
 			return cityRegistrationService.save(city);
 		} catch (StateNotFoundException e) {
@@ -53,7 +55,7 @@ public class CityController {
 
 	@PutMapping("/{id}")
 	public City update(@PathVariable Long id,
-	                   @RequestBody City city
+	                   @RequestBody @Valid City city
 	) {
 		City currentCity = cityRegistrationService.fetchOrFail(id);
 		BeanUtils.copyProperties(city, currentCity, "id");

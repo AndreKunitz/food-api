@@ -65,7 +65,7 @@ public class MerchantController {
 
 	@PutMapping("/{id}")
 	public Merchant update(@PathVariable Long id,
-	                       @RequestBody Merchant merchant
+	                       @RequestBody @Valid Merchant merchant
 	) {
 		var currentMerchant = merchantRegistrationService.fetchOrFail(id);
 		BeanUtils.copyProperties(merchant, currentMerchant,
