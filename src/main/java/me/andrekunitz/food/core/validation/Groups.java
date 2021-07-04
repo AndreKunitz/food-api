@@ -1,4 +1,4 @@
-package me.andrekunitz.food;
+package me.andrekunitz.food.core.validation;
 
 public interface Groups {
 

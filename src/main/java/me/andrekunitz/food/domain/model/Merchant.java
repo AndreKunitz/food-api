@@ -19,7 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,8 +29,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import me.andrekunitz.food.Groups;
+import me.andrekunitz.food.core.validation.DeliveryFee;
+import me.andrekunitz.food.core.validation.Groups;
+import me.andrekunitz.food.core.validation.ValueFieldIncludesDescription;
 
+@ValueFieldIncludesDescription(
+        valueField = "deliveryFee",
+        descriptionField = "name",
+        requiredDescription = "Free Delivery")
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
@@ -45,7 +51,8 @@ public class Merchant {
     @Column(length = 30, nullable = false)
     private String name;
 
-    @PositiveOrZero
+    @NotNull
+    @DeliveryFee
     @Column(name = "delivery_fee", nullable = false)
     private BigDecimal deliveryFee;
 

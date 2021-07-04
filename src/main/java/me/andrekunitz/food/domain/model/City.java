@@ -2,12 +2,11 @@ package me.andrekunitz.food.domain.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import me.andrekunitz.food.Groups;
+import me.andrekunitz.food.core.validation.Groups;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 
 import static javax.persistence.GenerationType.*;

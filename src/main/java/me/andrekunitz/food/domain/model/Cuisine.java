@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import me.andrekunitz.food.Groups;
+import me.andrekunitz.food.core.validation.Groups;
 
 @JsonRootName("cuisine")
 @Data

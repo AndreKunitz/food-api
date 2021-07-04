@@ -15,6 +15,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.domain.exception.BusinessException;
 import me.andrekunitz.food.domain.exception.CuisineNotFoundException;
+import me.andrekunitz.food.core.validation.ValidationException;
 import me.andrekunitz.food.domain.model.Merchant;
 import me.andrekunitz.food.domain.repository.MerchantRepository;
 import me.andrekunitz.food.domain.service.MerchantRegistrationService;
@@ -42,6 +45,7 @@ public class MerchantController {
 
 	private final MerchantRepository merchantRepository;
 	private final MerchantRegistrationService merchantRegistrationService;
+	private final SmartValidator validator;
 
 	@GetMapping
 	public List<Merchant> list() {
@@ -86,8 +90,18 @@ public class MerchantController {
 	) {
 		var currentMerchant = merchantRegistrationService.fetchOrFail(id);
 		merge(fields, currentMerchant, request);
+		validate(currentMerchant, "merchant");
 
 		return update(id, currentMerchant);
+	}
+
+	private void validate(Merchant merchant, String objectName) {
+		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(merchant, objectName);
+		validator.validate(merchant, bindingResult);
+
+		if (bindingResult.hasErrors()) {
+			throw new ValidationException(bindingResult);
+		}
 	}
 
 	private void merge(Map<String, Object> originFields, Merchant destinationMerchant, HttpServletRequest request) {
