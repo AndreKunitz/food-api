@@ -60,6 +60,7 @@ public class Merchant {
 //    @JsonIgnoreProperties("hibernateLazyInitializer")
     @Valid
     @ConvertGroup(to = Groups.CuisineId.class)
+    @NotNull
     @ManyToOne // (fetch = LAZY)
     @JoinColumn(name = "cuisine_id", nullable = false)
     private Cuisine cuisine;

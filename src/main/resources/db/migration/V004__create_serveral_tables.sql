@@ -1,11 +1,11 @@
-create table `group` (
+create table group$ (
     id   bigint       not null auto_increment,
     name varchar(60) not null,
 
     primary key (id)
 ) engine = InnoDB default charset = UTF8MB4;
 
-create table `permission` (
+create table permission$ (
     id          bigint       not null auto_increment,
     description varchar(60) not null,
     name        varchar(100) not null,
@@ -95,16 +95,16 @@ alter table merchant_payment_method
 
 alter table permission_group
     add constraint fk_permission_group_permission
-        foreign key (permission_id) references `permission` (id);
+        foreign key (permission_id) references permission$ (id);
 
 alter table permission_group
-    add constraint fk_permission_group_group foreign key (group_id) references `group` (id);
+    add constraint fk_permission_group_group foreign key (group_id) references group$ (id);
 
 alter table product
     add constraint fk_merchant_product foreign key (merchant_id) references merchant (id);
 
 alter table user_group
-    add constraint fk_user_group_group foreign key (group_id) references `group` (id);
+    add constraint fk_user_group_group foreign key (group_id) references group$ (id);
 
 alter table user_group
     add constraint fk_user_group_user foreign key (user_id) references user (id);
