@@ -2,6 +2,7 @@ package me.andrekunitz.food.domain.service;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.domain.exception.MerchantNotFoundException;
@@ -16,6 +17,7 @@ public class MerchantRegistrationService {
 	private final MerchantRepository merchantRepository;
 	private final CuisineRegistrationService cuisineRegistrationService;
 
+	@Transactional
 	public Merchant save(Merchant merchant) {
 		Cuisine cuisine = cuisineRegistrationService.fetchOrFail(merchant.getCuisine().getId());
 		merchant.setCuisine(cuisine);

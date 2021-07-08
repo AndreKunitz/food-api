@@ -3,6 +3,7 @@ package me.andrekunitz.food.domain.service;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.domain.exception.CuisineNotFoundException;
@@ -18,10 +19,12 @@ public class CuisineRegistrationService {
 
 	private final CuisinesRepository cuisinesRepository;
 
+	@Transactional
 	public Cuisine save(Cuisine cuisine) {
 		return cuisinesRepository.save(cuisine);
 	}
 
+	@Transactional
 	public void remove(Long id) {
 		try {
 			cuisinesRepository.deleteById(id);

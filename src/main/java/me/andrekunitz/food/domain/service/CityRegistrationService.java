@@ -3,6 +3,7 @@ package me.andrekunitz.food.domain.service;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.domain.exception.CityNotFoundException;
@@ -19,6 +20,7 @@ public class CityRegistrationService {
 	private final CityRepository cityRepository;
 	private final StateRegistrationService stateRegistrationService;
 
+	@Transactional
 	public City save(City city) {
 		var state = stateRegistrationService.fetchOrFail(city.getState().getId());
 		city.setState(state);
@@ -26,6 +28,7 @@ public class CityRegistrationService {
 		return cityRepository.save(city);
 	}
 
+	@Transactional
 	public void remove(Long id) {
 		try {
 			cityRepository.deleteById(id);

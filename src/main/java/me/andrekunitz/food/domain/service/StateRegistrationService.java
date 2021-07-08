@@ -3,6 +3,7 @@ package me.andrekunitz.food.domain.service;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.domain.exception.EntityInUseException;
@@ -18,10 +19,12 @@ public class StateRegistrationService {
 
 	private final StateRepository stateRepository;
 
+	@Transactional
 	public State save(State state) {
 		return stateRepository.save(state);
 	}
 
+	@Transactional
 	public void remove(Long id) {
 		try {
 			stateRepository.deleteById(id);
