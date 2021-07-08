@@ -1,6 +1,6 @@
 package me.andrekunitz.food.api.model.mixin;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +21,10 @@ public abstract class MerchantMixin {
 	private Address address;
 
 	@JsonIgnore
-	private LocalDateTime registrationDate;
+	private OffsetDateTime registrationDate;
 
 	@JsonIgnore
-	private LocalDateTime updateDate;
+	private OffsetDateTime updateDate;
 
 	@JsonIgnore
 	private List<PaymentMethod> paymentMethods = new ArrayList<>();

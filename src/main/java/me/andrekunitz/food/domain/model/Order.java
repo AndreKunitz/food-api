@@ -3,7 +3,7 @@ package me.andrekunitz.food.domain.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,11 +42,11 @@ public class Order {
 	private OrderStatus status;
 
 	@CreationTimestamp
-	private LocalDateTime registrationTimestamp;
+	private OffsetDateTime registrationTimestamp;
 
-	private LocalDateTime confirmationTimestamp;
-	private LocalDateTime cancellationTimestamp;
-	private LocalDateTime deliveredTimestamp;
+	private OffsetDateTime confirmationTimestamp;
+	private OffsetDateTime cancellationTimestamp;
+	private OffsetDateTime deliveredTimestamp;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)

@@ -2,7 +2,7 @@ package me.andrekunitz.food.domain.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class User {
 
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime registrationDate;
+	private OffsetDateTime registrationDate;
 
 	@ManyToMany
 	@JoinTable(name = "user_group",

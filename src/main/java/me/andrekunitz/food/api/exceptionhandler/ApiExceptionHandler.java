@@ -2,7 +2,7 @@ package me.andrekunitz.food.api.exceptionhandler;
 
 import static org.springframework.http.HttpStatus.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +43,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	private final MessageSource messageSource;
 
-	@ExceptionHandler({ ValidationException.class })
+	@ExceptionHandler({ValidationException.class})
 	public ResponseEntity<Object> handleValidationException(ValidationException ex, WebRequest request) {
 		return handleValidationInternal(ex, ex.getBindingResult(), new HttpHeaders(),
 				HttpStatus.BAD_REQUEST, request);
@@ -249,13 +249,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			body = Problem.builder()
 					.status(status.value())
 					.title(status.getReasonPhrase())
-					.timestamp(LocalDateTime.now())
+					.timestamp(OffsetDateTime.now())
 					.build();
 		} else if (body instanceof String) {
 			body = Problem.builder()
 					.status(status.value())
 					.title((String) body)
-					.timestamp(LocalDateTime.now())
+					.timestamp(OffsetDateTime.now())
 					.build();
 		}
 
@@ -269,7 +269,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				.status(status.value())
 				.type(problemType.getUri())
 				.title(problemType.getTitle())
-				.timestamp(LocalDateTime.now())
+				.timestamp(OffsetDateTime.now())
 				.detail(detail);
 	}
 
