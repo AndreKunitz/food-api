@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +17,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import me.andrekunitz.food.domain.model.State;
+import me.andrekunitz.food.api.assembler.StateInputDisassembler;
+import me.andrekunitz.food.api.assembler.StateModelAssembler;
+import me.andrekunitz.food.api.model.StateModel;
+import me.andrekunitz.food.api.model.input.StateInput;
 import me.andrekunitz.food.domain.repository.StateRepository;
 import me.andrekunitz.food.domain.service.StateRegistrationService;
 
@@ -29,31 +31,40 @@ public class StateController {
 
 	private final StateRepository stateRepository;
 	private final StateRegistrationService stateRegistrationService;
+	private final StateModelAssembler stateModelAssembler;
+	private final StateInputDisassembler stateInputDisassembler;
 
 	@GetMapping
-	public List<State> list() {
-		return stateRepository.findAll();
+	public List<StateModel> list() {
+		return stateModelAssembler.toCollectionModel(
+				stateRepository.findAll());
 	}
 
 	@GetMapping("/{id}")
-	public State search(@PathVariable Long id) {
-		return stateRegistrationService.fetchOrFail(id);
+	public StateModel search(@PathVariable Long id) {
+		return stateModelAssembler.toModel(
+				stateRegistrationService.fetchOrFail(id));
 	}
 
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public State add(@RequestBody @Valid State state) {
-		return stateRegistrationService.save(state);
+	public StateModel add(@RequestBody @Valid StateInput stateInput) {
+		var state = stateInputDisassembler.toDomainObject(stateInput);
+
+		return stateModelAssembler.toModel(
+				stateRegistrationService.save(state));
 	}
 
 	@PutMapping("/{id}")
-	public State update(@PathVariable Long id,
-	                    @RequestBody @Valid State state
+	public StateModel update(@PathVariable Long id,
+	                    @RequestBody @Valid StateInput stateInput
 	) {
 		var currentState = stateRegistrationService.fetchOrFail(id);
-		BeanUtils.copyProperties(state, currentState, "id");
 
-		return stateRegistrationService.save(currentState);
+		stateInputDisassembler.copyToDomainObject(stateInput, currentState);
+
+		return stateModelAssembler.toModel(
+				stateRegistrationService.save(currentState));
 	}
 
 	@DeleteMapping("/{id}")

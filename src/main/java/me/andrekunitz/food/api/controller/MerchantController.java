@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -31,9 +30,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import me.andrekunitz.food.api.assembler.MerchantInputDisassembler;
+import me.andrekunitz.food.api.assembler.MerchantModelAssembler;
+import me.andrekunitz.food.api.model.MerchantModel;
+import me.andrekunitz.food.api.model.input.MerchantInput;
+import me.andrekunitz.food.core.validation.ValidationException;
 import me.andrekunitz.food.domain.exception.BusinessException;
 import me.andrekunitz.food.domain.exception.CuisineNotFoundException;
-import me.andrekunitz.food.core.validation.ValidationException;
 import me.andrekunitz.food.domain.model.Merchant;
 import me.andrekunitz.food.domain.repository.MerchantRepository;
 import me.andrekunitz.food.domain.service.MerchantRegistrationService;
@@ -46,37 +49,45 @@ public class MerchantController {
 	private final MerchantRepository merchantRepository;
 	private final MerchantRegistrationService merchantRegistrationService;
 	private final SmartValidator validator;
+	private final MerchantModelAssembler merchantModelAssembler;
+	private final MerchantInputDisassembler merchantInputDisassembler;
 
 	@GetMapping
-	public List<Merchant> list() {
-		return merchantRepository.findAll();
+	public List<MerchantModel> list() {
+		return merchantModelAssembler.toCollectionModel(
+				merchantRepository.findAll());
 	}
 
 	@GetMapping("/{id}")
-	public Merchant search(@PathVariable Long id) {
-		return merchantRegistrationService.fetchOrFail(id);
+	public MerchantModel search(@PathVariable Long id) {
+		return merchantModelAssembler.toModel(
+				merchantRegistrationService.fetchOrFail(id));
 	}
 
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public Merchant add(@RequestBody @Valid Merchant merchant) {
+	public MerchantModel add(@RequestBody @Valid MerchantInput merchantInput) {
 		try {
-			return merchantRegistrationService.save(merchant);
+			var merchant = merchantInputDisassembler.toDomainObject(merchantInput);
+
+			return merchantModelAssembler.toModel(
+					merchantRegistrationService.save(merchant));
 		} catch (CuisineNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
 	}
 
 	@PutMapping("/{id}")
-	public Merchant update(@PathVariable Long id,
-	                       @RequestBody @Valid Merchant merchant
+	public MerchantModel update(@PathVariable Long id,
+	                            @RequestBody @Valid MerchantInput merchantInput
 	) {
 		var currentMerchant = merchantRegistrationService.fetchOrFail(id);
-		BeanUtils.copyProperties(merchant, currentMerchant,
-				"id", "paymentMethods", "address", "registrationDate", "products");
+
+		merchantInputDisassembler.copyToDomainObject(merchantInput, currentMerchant);
 
 		try {
-			return merchantRegistrationService.save(currentMerchant);
+			return merchantModelAssembler.toModel(
+					merchantRegistrationService.save(currentMerchant));
 		} catch (CuisineNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
@@ -84,7 +95,7 @@ public class MerchantController {
 	}
 
 	@PatchMapping("/{id}")
-	public Merchant partialUpdate(@PathVariable Long id,
+	public MerchantModel partialUpdate(@PathVariable Long id,
 	                              @RequestBody Map<String, Object> fields,
 	                              HttpServletRequest request
 	) {
@@ -92,7 +103,7 @@ public class MerchantController {
 		merge(fields, currentMerchant, request);
 		validate(currentMerchant, "merchant");
 
-		return update(id, currentMerchant);
+		return update(id, merchantInputDisassembler.toInputAssembler(currentMerchant));
 	}
 
 	private void validate(Merchant merchant, String objectName) {
@@ -129,15 +140,17 @@ public class MerchantController {
 	}
 
 	@GetMapping("/by-delivery-fee")
-	public List<Merchant> merchantsByDeliveryFee(
+	public List<MerchantModel> merchantsByDeliveryFee(
 			BigDecimal initialFee, BigDecimal finalFee) {
-		return merchantRepository.queryByDeliveryFeeBetween(initialFee, finalFee);
+		return merchantModelAssembler.toCollectionModel(
+				merchantRepository.queryByDeliveryFeeBetween(initialFee, finalFee));
 	}
 
 	@GetMapping("/by-name-and-cuisine")
-	public List<Merchant> merchantsByNameAndCuisine(
+	public List<MerchantModel> merchantsByNameAndCuisine(
 			String name, Long cuisineId) {
-		return merchantRepository.findByNameAndCuisine(name, cuisineId);
+		return merchantModelAssembler.toCollectionModel(
+				merchantRepository.findByNameAndCuisine(name, cuisineId));
 	}
 
 	@GetMapping("/first-by-name")

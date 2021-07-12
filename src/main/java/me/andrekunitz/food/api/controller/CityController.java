@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +18,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import me.andrekunitz.food.api.assembler.CityInputDisassembler;
+import me.andrekunitz.food.api.assembler.CityModelAssembler;
+import me.andrekunitz.food.api.model.CityModel;
+import me.andrekunitz.food.api.model.input.CityInput;
 import me.andrekunitz.food.domain.exception.BusinessException;
 import me.andrekunitz.food.domain.exception.StateNotFoundException;
 import me.andrekunitz.food.domain.model.City;
@@ -32,36 +35,45 @@ public class CityController {
 
 	private final CityRepository cityRepository;
 	private final CityRegistrationService cityRegistrationService;
+	private final CityModelAssembler cityModelAssembler;
+	private final CityInputDisassembler cityInputDisassembler;
 
 	@GetMapping
-	public List<City> list() {
-		return cityRepository.findAll();
+	public List<CityModel> list() {
+		return cityModelAssembler.toCollectionModel(
+				cityRepository.findAll());
 	}
 
 	@GetMapping("/{id}")
-	public City search(@PathVariable Long id) {
-		return cityRegistrationService.fetchOrFail(id);
+	public CityModel search(@PathVariable Long id) {
+		return cityModelAssembler.toModel(
+				cityRegistrationService.fetchOrFail(id));
 	}
 
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public City add(@RequestBody @Valid City city) {
+	public CityModel add(@RequestBody @Valid CityInput cityInput) {
 		try {
-			return cityRegistrationService.save(city);
+			var city = cityInputDisassembler.toDomainObject(cityInput);
+
+			return cityModelAssembler.toModel(
+					cityRegistrationService.save(city));
 		} catch (StateNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
 	}
 
 	@PutMapping("/{id}")
-	public City update(@PathVariable Long id,
-	                   @RequestBody @Valid City city
+	public CityModel update(@PathVariable Long id,
+	                   @RequestBody @Valid CityInput cityInput
 	) {
 		City currentCity = cityRegistrationService.fetchOrFail(id);
-		BeanUtils.copyProperties(city, currentCity, "id");
+
+		cityInputDisassembler.copyToDomainObject(cityInput, currentCity);
 
 		try {
-			return cityRegistrationService.save(currentCity);
+			return cityModelAssembler.toModel(
+					cityRegistrationService.save(currentCity));
 		} catch (StateNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
