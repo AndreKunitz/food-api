@@ -1,11 +1,11 @@
 package me.andrekunitz.food.api.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -16,6 +16,7 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -153,31 +154,15 @@ public class MerchantController {
 				merchantRepository.findByNameAndCuisine(name, cuisineId));
 	}
 
-	@GetMapping("/first-by-name")
-	public Optional<Merchant> merchantsFirstByName(String name) {
-		return merchantRepository.findFirstMerchantByNameContaining(name);
+	@PutMapping("/{id}/active")
+	@ResponseStatus(NO_CONTENT)
+	public void activate(@PathVariable Long id) {
+		merchantRegistrationService.activate(id);
 	}
 
-	@GetMapping("/top2-por-nome")
-	public List<Merchant> merchantsTop2ByName(String name) {
-		return merchantRepository.findTop2ByNameContaining(name);
-	}
-
-	@GetMapping("/count-by-cuisine")
-	public int merchantsCountByCuisine(Long cuisineId) {
-		return merchantRepository.countByCuisineId(cuisineId);
-	}
-
-	@GetMapping("by-name-and-fee")
-	public List<Merchant> merchantsByNameAndFee(String name,
-	                                            BigDecimal initialFee,
-	                                            BigDecimal finalFee) {
-
-		return merchantRepository.find(name, initialFee, finalFee);
-	}
-
-	@GetMapping("/free-delivery")
-	public List<Merchant> merchantsWithFreeDelivery(String name) {
-		return merchantRepository.findWithFreeDelivery(name);
+	@DeleteMapping("/{id}/active")
+	@ResponseStatus(NO_CONTENT)
+	public void deactivate(@PathVariable Long id) {
+		merchantRegistrationService.deactivate(id);
 	}
 }

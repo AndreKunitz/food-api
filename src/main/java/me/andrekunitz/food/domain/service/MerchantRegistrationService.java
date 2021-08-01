@@ -1,6 +1,5 @@
 package me.andrekunitz.food.domain.service;
 
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +22,20 @@ public class MerchantRegistrationService {
 		merchant.setCuisine(cuisine);
 
 		return merchantRepository.save(merchant);
+	}
+
+	@Transactional
+	public void activate(Long id) {
+		var merchant = this.fetchOrFail(id);
+
+		merchant.activate();
+	}
+
+	@Transactional
+	public void deactivate(Long id) {
+		var merchant = this.fetchOrFail(id);
+
+		merchant.deactivate();
 	}
 
 	public Merchant fetchOrFail(Long id) {

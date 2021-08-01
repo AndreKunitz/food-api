@@ -64,6 +64,8 @@ public class Merchant {
     @Embedded
     private Address address;
 
+    private Boolean active = Boolean.TRUE;
+
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime registrationDate;
@@ -80,4 +82,12 @@ public class Merchant {
 
     @OneToMany(mappedBy = "merchant")
     private List<Product> products = new ArrayList<>();
+
+    public void activate() {
+        setActive(true);
+    }
+
+    public void deactivate() {
+        setActive(false);
+    }
 }

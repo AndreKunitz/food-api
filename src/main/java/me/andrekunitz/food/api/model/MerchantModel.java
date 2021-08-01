@@ -13,5 +13,5 @@ public class MerchantModel {
 	private String name;
 	private BigDecimal deliveryFee;
 	private CuisineModel cuisine;
-
+	private Boolean active;
 }

@@ -50,11 +50,11 @@ INSERT INTO CITY (id, `name`, state_id) VALUES (3, 'Dallas', 2);
 INSERT INTO CITY (id, `name`, state_id) VALUES (4, 'Houston', 2);
 INSERT INTO CITY (id, `name`, state_id) VALUES (5, 'Miami', 3);
 
-INSERT INTO MERCHANT (id, `name`, delivery_fee, cuisine_id, registration_date, update_date, address_zip_code, address_street, address_number, address_neighborhood, address_city_id) VALUES (1, 'Thai Gourmet', 10, 1, utc_timestamp, utc_timestamp, '00000-000', 'Sunset Boulevard', '000', 'Sunset Strip', 1);
-INSERT INTO MERCHANT (id, `name`, delivery_fee, cuisine_id, registration_date, update_date) VALUES (2, 'Thai Delivery', 9.50, 1, utc_timestamp, utc_timestamp);
-INSERT INTO MERCHANT (id, `name`, delivery_fee, cuisine_id, registration_date, update_date) VALUES (3, 'Tuk Tuk Indian Food', 15, 2, utc_timestamp, utc_timestamp);
-INSERT INTO MERCHANT (id, `name`, delivery_fee, cuisine_id, registration_date, update_date) VALUES (4, 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp);
-INSERT INTO MERCHANT (id, `name`, delivery_fee, cuisine_id, registration_date, update_date) VALUES (5, 'Uncle Sam', 11, 4, utc_timestamp, utc_timestamp);
+INSERT INTO MERCHANT (id, `name`, delivery_fee, cuisine_id, registration_date, update_date, active, address_zip_code, address_street, address_number, address_neighborhood, address_city_id) VALUES (1, 'Thai Gourmet', 10, 1, utc_timestamp, utc_timestamp, 1, '00000-000', 'Sunset Boulevard', '000', 'Sunset Strip', 1);
+INSERT INTO MERCHANT (id, `name`, delivery_fee, cuisine_id, registration_date, update_date, active) VALUES (2, 'Thai Delivery', 9.50, 1, utc_timestamp, utc_timestamp, 1);
+INSERT INTO MERCHANT (id, `name`, delivery_fee, cuisine_id, registration_date, update_date, active) VALUES (3, 'Tuk Tuk Indian Food', 15, 2, utc_timestamp, utc_timestamp, 1);
+INSERT INTO MERCHANT (id, `name`, delivery_fee, cuisine_id, registration_date, update_date, active) VALUES (4, 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp, 1);
+INSERT INTO MERCHANT (id, `name`, delivery_fee, cuisine_id, registration_date, update_date, active) VALUES (5, 'Uncle Sam', 11, 4, utc_timestamp, utc_timestamp, 1);
 
 INSERT INTO PAYMENT_METHOD (id, description) VALUES (1, 'Credit Card');
 INSERT INTO PAYMENT_METHOD (id, description) VALUES (2, 'Debit Card');
