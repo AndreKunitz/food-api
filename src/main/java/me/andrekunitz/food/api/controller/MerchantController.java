@@ -37,6 +37,7 @@ import me.andrekunitz.food.api.model.MerchantModel;
 import me.andrekunitz.food.api.model.input.MerchantInput;
 import me.andrekunitz.food.core.validation.ValidationException;
 import me.andrekunitz.food.domain.exception.BusinessException;
+import me.andrekunitz.food.domain.exception.CityNotFoundException;
 import me.andrekunitz.food.domain.exception.CuisineNotFoundException;
 import me.andrekunitz.food.domain.model.Merchant;
 import me.andrekunitz.food.domain.repository.MerchantRepository;
@@ -73,7 +74,7 @@ public class MerchantController {
 
 			return merchantModelAssembler.toModel(
 					merchantRegistrationService.save(merchant));
-		} catch (CuisineNotFoundException e) {
+		} catch (CuisineNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
 	}
@@ -89,7 +90,7 @@ public class MerchantController {
 		try {
 			return merchantModelAssembler.toModel(
 					merchantRegistrationService.save(currentMerchant));
-		} catch (CuisineNotFoundException e) {
+		} catch (CuisineNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
 

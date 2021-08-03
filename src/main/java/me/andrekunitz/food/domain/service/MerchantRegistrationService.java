@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.domain.exception.MerchantNotFoundException;
+import me.andrekunitz.food.domain.model.City;
 import me.andrekunitz.food.domain.model.Cuisine;
 import me.andrekunitz.food.domain.model.Merchant;
 import me.andrekunitz.food.domain.repository.MerchantRepository;
@@ -15,11 +16,15 @@ public class MerchantRegistrationService {
 
 	private final MerchantRepository merchantRepository;
 	private final CuisineRegistrationService cuisineRegistrationService;
+	private final CityRegistrationService cityRegistrationService;
 
 	@Transactional
 	public Merchant save(Merchant merchant) {
 		Cuisine cuisine = cuisineRegistrationService.fetchOrFail(merchant.getCuisine().getId());
+		City city = cityRegistrationService.fetchOrFail(merchant.getAddress().getCity().getId());
+
 		merchant.setCuisine(cuisine);
+		merchant.getAddress().setCity(city);
 
 		return merchantRepository.save(merchant);
 	}

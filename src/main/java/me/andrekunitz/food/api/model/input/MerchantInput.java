@@ -24,4 +24,8 @@ public class MerchantInput {
 	@Valid
 	@NotNull
 	private CuisineIdInput cuisine;
+
+	@Valid
+	@NotNull
+	private AddressInput address;
 }

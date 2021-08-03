@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.api.model.input.MerchantInput;
+import me.andrekunitz.food.domain.model.City;
 import me.andrekunitz.food.domain.model.Cuisine;
 import me.andrekunitz.food.domain.model.Merchant;
 
@@ -24,6 +25,10 @@ public class MerchantInputDisassembler {
 			me.andrekunitz.food.domain.model.Cuisine was altered from 1 to 2
 		*/
 		merchant.setCuisine(new Cuisine());
+
+		if (merchant.getAddress() != null) {
+			merchant.getAddress().setCity(new City());
+		}
 
 		modelMapper.map(merchantInput, merchant);
 	}
