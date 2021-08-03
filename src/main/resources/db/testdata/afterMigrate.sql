@@ -73,3 +73,5 @@ INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('M
 INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('Ancho steak', 'Soft and juicy cut, two fingers thick, taken from the front of the ribeye', 79, 1, 4);
 INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('T-Bone', 'Very tasty cut, with a T-shaped bone, with the filet on one side and the filet mignon on the other.', 89, 1, 4);
 INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('Hamburger', 'Sandwich with lots of cheese, beef hamburger, bacon, egg, salad and mayonnaise', 19, 1, 5);
+
+INSERT INTO GROUP$ (name) VALUES ('Manager'), ('Seller');
