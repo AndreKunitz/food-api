@@ -22,7 +22,7 @@ public class MerchantModelAssembler {
 
 	public List<MerchantModel> toCollectionModel(List<Merchant> merchants) {
 		return merchants.stream()
-				.map(merchant -> toModel(merchant))
+				.map(this::toModel)
 				.collect(Collectors.toList());
 	}
 

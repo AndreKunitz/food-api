@@ -22,7 +22,7 @@ public class StateModelAssembler {
 
 	public List<StateModel> toCollectionModel(List<State> states) {
 		return states.stream()
-				.map(state -> toModel(state))
+				.map(this::toModel)
 				.collect(Collectors.toList());
 	}
 }

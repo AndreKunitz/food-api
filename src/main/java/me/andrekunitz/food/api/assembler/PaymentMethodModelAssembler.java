@@ -22,7 +22,7 @@ public class PaymentMethodModelAssembler {
 
 	public List<PaymentMethodModel> toCollectionModel(List<PaymentMethod> paymentMethods) {
 		return paymentMethods.stream()
-				.map(paymentMethod -> toModel(paymentMethod))
+				.map(this::toModel)
 				.collect(Collectors.toList());
 	}
 }

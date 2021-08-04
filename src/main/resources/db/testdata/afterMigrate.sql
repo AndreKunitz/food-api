@@ -75,3 +75,8 @@ INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('T
 INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('Hamburger', 'Sandwich with lots of cheese, beef hamburger, bacon, egg, salad and mayonnaise', 19, 1, 5);
 
 INSERT INTO GROUP$ (name) VALUES ('Manager'), ('Seller');
+
+INSERT INTO USER (id, name, email, password, registration_date) VALUES (1, 'John Doe', 'john@gmail.com', '123', utc_timestamp);
+INSERT INTO USER (id, name, email, password, registration_date) VALUES (2, 'Jane Doe', 'jane@gmail.com', '123', utc_timestamp);
+INSERT INTO USER (id, name, email, password, registration_date) VALUES (3, 'Bill Murrey', 'bill@gmail.com', '123', utc_timestamp);
+INSERT INTO USER (id, name, email, password, registration_date) VALUES (4, 'Jesus Christ', 'jesus@gmail.com', '123', utc_timestamp);

@@ -7,21 +7,21 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import me.andrekunitz.food.api.model.GroupModel;
-import me.andrekunitz.food.domain.model.Group;
+import me.andrekunitz.food.api.model.UserModel;
+import me.andrekunitz.food.domain.model.User;
 
 @Component
 @RequiredArgsConstructor
-public class GroupModelAssembler {
+public class UserModelAssembler {
 
 	private final ModelMapper modelMapper;
 
-	public GroupModel toModel(Group group) {
-		return modelMapper.map(group, GroupModel.class);
+	public UserModel toModel(User user) {
+		return modelMapper.map(user, UserModel.class);
 	}
 
-	public List<GroupModel> toCollectionModel(List<Group> groups) {
-		return groups.stream()
+	public List<UserModel> toCollectionModel(List<User> users) {
+		return users.stream()
 				.map(this::toModel)
 				.collect(Collectors.toList());
 	}

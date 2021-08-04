@@ -22,7 +22,7 @@ public class CityModelAssembler {
 
 	public List<CityModel> toCollectionModel(List<City> cities) {
 		return cities.stream()
-				.map(city -> toModel(city))
+				.map(this::toModel)
 				.collect(Collectors.toList());
 	}
 }
