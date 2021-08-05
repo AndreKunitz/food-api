@@ -1,5 +1,9 @@
 package me.andrekunitz.food.domain.service;
 
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +18,22 @@ import me.andrekunitz.food.domain.repository.UserRepository;
 public class UserRegistrationService {
 
 	private final UserRepository userRepository;
+	private final EntityManager entityManager;
 
 	@Transactional
 	public User save(User user) {
+
+		// TODO: remove entity Manager from Service Layer
+		entityManager.detach(user);
+
+		Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+
+		if (existingUser.isPresent() && !existingUser.get().equals(user)) {
+			throw new BusinessException(
+					String.format("user with email %s already exists", user.getEmail())
+			);
+		}
+
 		return userRepository.save(user);
 	}
 
