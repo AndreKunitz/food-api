@@ -25,7 +25,7 @@ public class UserRegistrationService {
 
 		if (existingUser.isPresent() && !existingUser.get().equals(user)) {
 			throw new BusinessException(
-					String.format("user with email %s already exists", user.getEmail())
+					String.format("User with email %s already exists", user.getEmail())
 			);
 		}
 

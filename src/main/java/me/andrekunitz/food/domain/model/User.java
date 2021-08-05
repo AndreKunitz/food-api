@@ -24,6 +24,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class User {
 
+	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
@@ -42,9 +43,11 @@ public class User {
 	private OffsetDateTime registrationDate;
 
 	@ManyToMany
-	@JoinTable(name = "user_group",
+	@JoinTable(
+			name = "user_group",
 			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "group_id"))
+			inverseJoinColumns = @JoinColumn(name = "group_id")
+	)
 	private List<Group> groups = new ArrayList<>();
 
 	public boolean passwordMatches(String password) {
