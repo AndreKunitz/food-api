@@ -15,13 +15,14 @@ import me.andrekunitz.food.domain.repository.MerchantRepository;
 public class MerchantRegistrationService {
 
 	private final MerchantRepository merchantRepository;
-	private final CuisineRegistrationService cuisineRegistrationService;
-	private final CityRegistrationService cityRegistrationService;
+	private final CuisineRegistrationService cuisineRegistration;
+	private final CityRegistrationService cityRegistration;
+	private final PaymentMethodRegistrationService paymentMethodRegistration;
 
 	@Transactional
 	public Merchant save(Merchant merchant) {
-		Cuisine cuisine = cuisineRegistrationService.fetchOrFail(merchant.getCuisine().getId());
-		City city = cityRegistrationService.fetchOrFail(merchant.getAddress().getCity().getId());
+		Cuisine cuisine = cuisineRegistration.fetchOrFail(merchant.getCuisine().getId());
+		City city = cityRegistration.fetchOrFail(merchant.getAddress().getCity().getId());
 
 		merchant.setCuisine(cuisine);
 		merchant.getAddress().setCity(city);
@@ -41,6 +42,22 @@ public class MerchantRegistrationService {
 		var merchant = this.fetchOrFail(id);
 
 		merchant.deactivate();
+	}
+
+	@Transactional
+	public void disassociatePaymentMethod(Long merchantId, Long paymentMethodId) {
+		var merchant = fetchOrFail(merchantId);
+		var paymentMethod = paymentMethodRegistration.fetchOrFail(paymentMethodId);
+
+		merchant.removePaymentMethod(paymentMethod);
+	}
+
+	@Transactional
+	public void associatePaymentMethod(Long merchantId, Long paymentMethodId) {
+		var merchant = fetchOrFail(merchantId);
+		var paymentMethod = paymentMethodRegistration.fetchOrFail(paymentMethodId);
+
+		merchant.addPaymentMethod(paymentMethod);
 	}
 
 	public Merchant fetchOrFail(Long id) {
