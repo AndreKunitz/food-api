@@ -68,6 +68,8 @@ public class Merchant {
 
     private Boolean active = Boolean.TRUE;
 
+    private Boolean open = Boolean.FALSE;
+
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime registrationDate;
@@ -91,6 +93,14 @@ public class Merchant {
 
     public void deactivate() {
         setActive(false);
+    }
+
+    public void open() {
+        setOpen(true);
+    }
+
+    public void close() {
+        setOpen(false);
     }
 
     public boolean removePaymentMethod(PaymentMethod paymentMethod) {

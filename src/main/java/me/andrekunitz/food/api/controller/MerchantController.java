@@ -49,7 +49,7 @@ import me.andrekunitz.food.domain.service.MerchantRegistrationService;
 public class MerchantController {
 
 	private final MerchantRepository merchantRepository;
-	private final MerchantRegistrationService merchantRegistrationService;
+	private final MerchantRegistrationService merchantRegistration;
 	private final SmartValidator validator;
 	private final MerchantModelAssembler merchantModelAssembler;
 	private final MerchantInputDisassembler merchantInputDisassembler;
@@ -63,7 +63,7 @@ public class MerchantController {
 	@GetMapping("/{id}")
 	public MerchantModel search(@PathVariable Long id) {
 		return merchantModelAssembler.toModel(
-				merchantRegistrationService.fetchOrFail(id));
+				merchantRegistration.fetchOrFail(id));
 	}
 
 	@PostMapping
@@ -73,7 +73,7 @@ public class MerchantController {
 			var merchant = merchantInputDisassembler.toDomainObject(merchantInput);
 
 			return merchantModelAssembler.toModel(
-					merchantRegistrationService.save(merchant));
+					merchantRegistration.save(merchant));
 		} catch (CuisineNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
@@ -83,13 +83,13 @@ public class MerchantController {
 	public MerchantModel update(@PathVariable Long id,
 	                            @RequestBody @Valid MerchantInput merchantInput
 	) {
-		var currentMerchant = merchantRegistrationService.fetchOrFail(id);
+		var currentMerchant = merchantRegistration.fetchOrFail(id);
 
 		merchantInputDisassembler.copyToDomainObject(merchantInput, currentMerchant);
 
 		try {
 			return merchantModelAssembler.toModel(
-					merchantRegistrationService.save(currentMerchant));
+					merchantRegistration.save(currentMerchant));
 		} catch (CuisineNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
@@ -101,7 +101,7 @@ public class MerchantController {
 	                              @RequestBody Map<String, Object> fields,
 	                              HttpServletRequest request
 	) {
-		var currentMerchant = merchantRegistrationService.fetchOrFail(id);
+		var currentMerchant = merchantRegistration.fetchOrFail(id);
 		merge(fields, currentMerchant, request);
 		validate(currentMerchant, "merchant");
 
@@ -158,12 +158,24 @@ public class MerchantController {
 	@PutMapping("/{id}/active")
 	@ResponseStatus(NO_CONTENT)
 	public void activate(@PathVariable Long id) {
-		merchantRegistrationService.activate(id);
+		merchantRegistration.activate(id);
 	}
 
 	@DeleteMapping("/{id}/active")
 	@ResponseStatus(NO_CONTENT)
 	public void deactivate(@PathVariable Long id) {
-		merchantRegistrationService.deactivate(id);
+		merchantRegistration.deactivate(id);
+	}
+
+	@PutMapping("/{id}/open")
+	@ResponseStatus(NO_CONTENT)
+	public void open(@PathVariable Long id) {
+		merchantRegistration.open(id);
+	}
+
+	@PutMapping("/{id}/close")
+	@ResponseStatus(NO_CONTENT)
+	public void close(@PathVariable Long id) {
+		merchantRegistration.close(id);
 	}
 }

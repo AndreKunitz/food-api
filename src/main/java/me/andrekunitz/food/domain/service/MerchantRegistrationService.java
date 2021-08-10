@@ -60,6 +60,20 @@ public class MerchantRegistrationService {
 		merchant.addPaymentMethod(paymentMethod);
 	}
 
+	@Transactional
+	public void open(Long id) {
+		var merchant = fetchOrFail(id);
+
+		merchant.open();
+	}
+
+	@Transactional
+	public void close(Long id) {
+		var merchant = fetchOrFail(id);
+
+		merchant.close();
+	}
+
 	public Merchant fetchOrFail(Long id) {
 		return merchantRepository.findById(id)
 				.orElseThrow(() -> new MerchantNotFoundException(id));
