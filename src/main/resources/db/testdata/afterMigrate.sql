@@ -74,9 +74,11 @@ INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('A
 INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('T-Bone', 'Very tasty cut, with a T-shaped bone, with the filet on one side and the filet mignon on the other.', 89, 1, 4);
 INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('Hamburger', 'Sandwich with lots of cheese, beef hamburger, bacon, egg, salad and mayonnaise', 19, 1, 5);
 
-INSERT INTO GROUP$ (name) VALUES ('Manager'), ('Seller');
-
 INSERT INTO USER (id, name, email, password, registration_date) VALUES (1, 'John Doe', 'john@gmail.com', '123', utc_timestamp);
 INSERT INTO USER (id, name, email, password, registration_date) VALUES (2, 'Jane Doe', 'jane@gmail.com', '123', utc_timestamp);
 INSERT INTO USER (id, name, email, password, registration_date) VALUES (3, 'Bill Murrey', 'bill@gmail.com', '123', utc_timestamp);
 INSERT INTO USER (id, name, email, password, registration_date) VALUES (4, 'Jesus Christ', 'jesus@gmail.com', '123', utc_timestamp);
+
+INSERT INTO GROUP$ (id, `name`) VALUES (1, 'Manager'), (2, 'Seller');
+
+INSERT INTO PERMISSION_GROUP (group_id, permission_id) VALUES (1, 1), (1, 2), (2, 1), (2, 2);

@@ -16,7 +16,9 @@ import me.andrekunitz.food.domain.repository.GroupRepository;
 public class GroupRegistrationService {
 
 	public static final String MSG_GROUP_IN_USE = "Group with id %d is in use and cannot be removed";
+
 	private final GroupRepository groupRepository;
+	private final PermissionRegistrationService permissionRegistration;
 
 	@Transactional
 	public Group save(Group group) {
@@ -39,6 +41,22 @@ public class GroupRegistrationService {
 	public Group fetchOrFail(Long id) {
 		return groupRepository.findById(id)
 				.orElseThrow(() -> new GroupNotFoundException(id));
+	}
+
+	@Transactional
+	public void disassociatePermission(Long groupId, Long permissionId) {
+		var group = fetchOrFail(groupId);
+		var permission = permissionRegistration.fetchOrFail(permissionId);
+
+		group.removePermission(permission);
+	}
+
+	@Transactional
+	public void associatePermission(Long groupId, Long permissionId) {
+		var group = fetchOrFail(groupId);
+		var permission = permissionRegistration.fetchOrFail(permissionId);
+
+		group.addPermission(permission);
 	}
 
 }

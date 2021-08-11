@@ -2,8 +2,8 @@ package me.andrekunitz.food.domain.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,6 +35,14 @@ public class Group {
 	@JoinTable(name = "permission_group",
 			joinColumns = @JoinColumn(name = "group_id"),
 			inverseJoinColumns = @JoinColumn(name = "permission_id"))
-	private List<Permission> permissions = new ArrayList<>();
+	private Set<Permission> permissions = new HashSet<>();
+
+	public boolean addPermission(Permission permission) {
+		return getPermissions().add(permission);
+	}
+
+	public boolean removePermission(Permission permission) {
+		return getPermissions().remove(permission);
+	}
 
 }
