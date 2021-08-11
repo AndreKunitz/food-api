@@ -18,6 +18,7 @@ public class MerchantRegistrationService {
 	private final CuisineRegistrationService cuisineRegistration;
 	private final CityRegistrationService cityRegistration;
 	private final PaymentMethodRegistrationService paymentMethodRegistration;
+	private final UserRegistrationService userRegistration;
 
 	@Transactional
 	public Merchant save(Merchant merchant) {
@@ -77,5 +78,21 @@ public class MerchantRegistrationService {
 	public Merchant fetchOrFail(Long id) {
 		return merchantRepository.findById(id)
 				.orElseThrow(() -> new MerchantNotFoundException(id));
+	}
+
+	@Transactional
+	public void associateResponsible(Long merchantId, Long userId) {
+		var merchant = fetchOrFail(merchantId);
+		var user = userRegistration.fetchOrFail(userId);
+
+		merchant.addResponsible(user);
+	}
+
+	@Transactional
+	public void disassociateResponsible(Long merchantId, Long userId) {
+		var merchant = fetchOrFail(merchantId);
+		var user = userRegistration.fetchOrFail(userId);
+
+		merchant.removeResponsible(user);
 	}
 }

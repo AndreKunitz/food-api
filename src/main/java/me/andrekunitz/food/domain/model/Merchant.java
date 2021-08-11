@@ -87,6 +87,12 @@ public class Merchant {
     @OneToMany(mappedBy = "merchant")
     private List<Product> products = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "merchant_responsible_user",
+            joinColumns = @JoinColumn(name = "merchant_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> responsible = new HashSet<>();
+
     public void activate() {
         setActive(true);
     }
@@ -110,4 +116,12 @@ public class Merchant {
 	public boolean addPaymentMethod(PaymentMethod paymentMethod) {
         return getPaymentMethods().add(paymentMethod);
 	}
+
+    public boolean addResponsible(User user) {
+        return getResponsible().add(user);
+    }
+
+    public boolean removeResponsible(User user) {
+        return getResponsible().remove(user);
+    }
 }

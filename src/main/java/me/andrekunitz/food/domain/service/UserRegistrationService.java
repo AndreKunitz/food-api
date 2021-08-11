@@ -16,6 +16,7 @@ import me.andrekunitz.food.domain.repository.UserRepository;
 public class UserRegistrationService {
 
 	private final UserRepository userRepository;
+	private final GroupRegistrationService groupRegistration;
 
 	@Transactional
 	public User save(User user) {
@@ -46,5 +47,21 @@ public class UserRegistrationService {
 	public User fetchOrFail(Long userId) {
 		return userRepository.findById(userId)
 				.orElseThrow(() -> new UserNotFoundException(userId));
+	}
+
+	@Transactional
+	public void associateGroup(Long userId, Long groupId) {
+		var user = fetchOrFail(userId);
+		var group = groupRegistration.fetchOrFail(groupId);
+
+		user.addGroup(group);
+	}
+
+	@Transactional
+	public void disassociateGroup(Long userId, Long groupId) {
+		var user = fetchOrFail(userId);
+		var group = groupRegistration.fetchOrFail(groupId);
+
+		user.removeGroup(group);
 	}
 }

@@ -3,8 +3,8 @@ package me.andrekunitz.food.domain.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,7 +48,7 @@ public class User {
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "group_id")
 	)
-	private List<Group> groups = new ArrayList<>();
+	private Set<Group> groups = new HashSet<>();
 
 	public boolean passwordMatches(String password) {
 		return getPassword().equals(password);
@@ -57,4 +57,13 @@ public class User {
 	public boolean passwordDoesNotMatch(String password) {
 		return  !passwordMatches(password);
 	}
+
+	public boolean addGroup(Group group) {
+		return getGroups().add(group);
+	}
+
+	public boolean removeGroup(Group group) {
+		return getGroups().remove(group);
+	}
+
 }

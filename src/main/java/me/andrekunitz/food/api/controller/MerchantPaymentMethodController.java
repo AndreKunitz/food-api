@@ -33,14 +33,17 @@ public class MerchantPaymentMethodController {
 
 	@DeleteMapping("/{paymentMethodId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void disassociate(@PathVariable Long merchantId, @PathVariable Long paymentMethodId) {
+	public void disassociate(@PathVariable Long merchantId,
+							 @PathVariable Long paymentMethodId
+	) {
 		merchantRegistration.disassociatePaymentMethod(merchantId, paymentMethodId);
 	}
 
 	@PutMapping("/{paymentMethodId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void associate(@PathVariable Long merchantId, @PathVariable Long paymentMethodId) {
+	public void associate(@PathVariable Long merchantId,
+						  @PathVariable Long paymentMethodId
+	) {
 		merchantRegistration.associatePaymentMethod(merchantId, paymentMethodId);
 	}
-
 }

@@ -1,5 +1,6 @@
 package me.andrekunitz.food.api.assembler;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,9 +21,10 @@ public class GroupModelAssembler {
 		return modelMapper.map(group, GroupModel.class);
 	}
 
-	public List<GroupModel> toCollectionModel(List<Group> groups) {
+	public List<GroupModel> toCollectionModel(Collection<Group> groups) {
 		return groups.stream()
 				.map(this::toModel)
 				.collect(Collectors.toList());
 	}
+
 }

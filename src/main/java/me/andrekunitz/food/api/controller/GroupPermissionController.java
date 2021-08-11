@@ -35,14 +35,17 @@ public class GroupPermissionController {
 
 	@PutMapping("{permissionId}")
 	@ResponseStatus(NO_CONTENT)
-	public void associate(@PathVariable Long groupId, @PathVariable Long permissionId) {
+	public void associate(@PathVariable Long groupId,
+						  @PathVariable Long permissionId
+	) {
 		groupRegistration.associatePermission(groupId, permissionId);
 	}
 
 	@DeleteMapping("{permissionId}")
 	@ResponseStatus(NO_CONTENT)
-	public void disassociate(@PathVariable Long groupId, @PathVariable Long permissionId) {
+	public void disassociate(@PathVariable Long groupId,
+							 @PathVariable Long permissionId
+	) {
 		groupRegistration.disassociatePermission(groupId, permissionId);
 	}
-
 }

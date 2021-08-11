@@ -1,5 +1,6 @@
 package me.andrekunitz.food.api.assembler;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class UserModelAssembler {
 		return modelMapper.map(user, UserModel.class);
 	}
 
-	public List<UserModel> toCollectionModel(List<User> users) {
+	public List<UserModel> toCollectionModel(Collection<User> users) {
 		return users.stream()
 				.map(this::toModel)
 				.collect(Collectors.toList());

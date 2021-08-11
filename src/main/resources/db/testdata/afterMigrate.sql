@@ -19,6 +19,7 @@ DELETE FROM MERCHANT;
 DELETE FROM MERCHANT_PAYMENT_METHOD;
 DELETE FROM USER;
 DELETE FROM USER_GROUP;
+DELETE FROM MERCHANT_RESPONSIBLE_USER;
 
 # Restore foreign key checking
 SET FOREIGN_KEY_CHECKS = 1;
@@ -74,11 +75,17 @@ INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('A
 INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('T-Bone', 'Very tasty cut, with a T-shaped bone, with the filet on one side and the filet mignon on the other.', 89, 1, 4);
 INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('Hamburger', 'Sandwich with lots of cheese, beef hamburger, bacon, egg, salad and mayonnaise', 19, 1, 5);
 
-INSERT INTO USER (id, name, email, password, registration_date) VALUES (1, 'John Doe', 'john@gmail.com', '123', utc_timestamp);
-INSERT INTO USER (id, name, email, password, registration_date) VALUES (2, 'Jane Doe', 'jane@gmail.com', '123', utc_timestamp);
-INSERT INTO USER (id, name, email, password, registration_date) VALUES (3, 'Bill Murrey', 'bill@gmail.com', '123', utc_timestamp);
-INSERT INTO USER (id, name, email, password, registration_date) VALUES (4, 'Jesus Christ', 'jesus@gmail.com', '123', utc_timestamp);
+INSERT INTO USER (id, `name`, email, password, registration_date) VALUES (1, 'John Doe', 'john@gmail.com', '123', utc_timestamp);
+INSERT INTO USER (id, `name`, email, password, registration_date) VALUES (2, 'Jane Doe', 'jane@gmail.com', '123', utc_timestamp);
+INSERT INTO USER (id, `name`, email, password, registration_date) VALUES (3, 'Bill Murray', 'bill@gmail.com', '123', utc_timestamp);
+INSERT INTO USER (id, `name`, email, password, registration_date) VALUES (4, 'Jesus Christ', 'jesus@gmail.com', '123', utc_timestamp);
 
 INSERT INTO GROUP$ (id, `name`) VALUES (1, 'Manager'), (2, 'Seller');
 
 INSERT INTO PERMISSION_GROUP (group_id, permission_id) VALUES (1, 1), (1, 2), (2, 1), (2, 2);
+
+INSERT INTO USER_GROUP (user_id, group_id) VALUES (1, 1), (1, 2), (2, 2);
+
+INSERT INTO USER (id, `name`, email, password, registration_date) VALUES (5, 'Mary Jane', 'mary@gmail.com', '123', utc_timestamp);
+
+INSERT INTO MERCHANT_RESPONSIBLE_USER (merchant_id, user_id) VALUES (1, 5), (3, 5);
