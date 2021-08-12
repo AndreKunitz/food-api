@@ -39,6 +39,7 @@ import me.andrekunitz.food.core.validation.ValidationException;
 import me.andrekunitz.food.domain.exception.BusinessException;
 import me.andrekunitz.food.domain.exception.CityNotFoundException;
 import me.andrekunitz.food.domain.exception.CuisineNotFoundException;
+import me.andrekunitz.food.domain.exception.MerchantNotFoundException;
 import me.andrekunitz.food.domain.model.Merchant;
 import me.andrekunitz.food.domain.repository.MerchantRepository;
 import me.andrekunitz.food.domain.service.MerchantRegistrationService;
@@ -165,6 +166,26 @@ public class MerchantController {
 	@ResponseStatus(NO_CONTENT)
 	public void deactivate(@PathVariable Long id) {
 		merchantRegistration.deactivate(id);
+	}
+
+	@PutMapping("/activations")
+	@ResponseStatus(NO_CONTENT)
+	public void activateMultiple(@RequestBody List<Long> merchantIds) {
+		try {
+			merchantRegistration.activate(merchantIds);
+		} catch (MerchantNotFoundException e) {
+			throw new BusinessException(e.getMessage(), e);
+		}
+	}
+
+	@DeleteMapping("/activations")
+	@ResponseStatus(NO_CONTENT)
+	public void deactivateMultiple(@RequestBody List<Long> merchantIds) {
+		try {
+			merchantRegistration.deactivate(merchantIds);
+		} catch (MerchantNotFoundException e) {
+			throw new BusinessException(e.getMessage(), e);
+		}
 	}
 
 	@PutMapping("/{id}/open")

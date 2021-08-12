@@ -1,5 +1,7 @@
 package me.andrekunitz.food.domain.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +48,17 @@ public class MerchantRegistrationService {
 	}
 
 	@Transactional
+	public void activate(List<Long> merchantIds) {
+		merchantIds.forEach(this::activate);
+	}
+
+	@Transactional
+	public void deactivate(List<Long> merchantIds) {
+		merchantIds.forEach(this::deactivate);
+	}
+
+
+	@Transactional
 	public void disassociatePaymentMethod(Long merchantId, Long paymentMethodId) {
 		var merchant = fetchOrFail(merchantId);
 		var paymentMethod = paymentMethodRegistration.fetchOrFail(paymentMethodId);
@@ -74,7 +87,6 @@ public class MerchantRegistrationService {
 
 		merchant.close();
 	}
-
 	public Merchant fetchOrFail(Long id) {
 		return merchantRepository.findById(id)
 				.orElseThrow(() -> new MerchantNotFoundException(id));
