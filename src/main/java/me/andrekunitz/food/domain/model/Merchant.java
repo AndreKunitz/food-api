@@ -124,4 +124,13 @@ public class Merchant {
     public boolean removeResponsible(User user) {
         return getResponsible().remove(user);
     }
+
+    public boolean acceptsPaymentMethod(PaymentMethod paymentMethod) {
+        return getPaymentMethods().contains(paymentMethod);
+    }
+
+    public boolean notAcceptsPaymentMethod(PaymentMethod paymentMethod) {
+        return !acceptsPaymentMethod(paymentMethod);
+    }
+
 }

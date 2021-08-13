@@ -2,7 +2,7 @@ package me.andrekunitz.food.domain.model;
 
 public enum OrderStatus {
 
-	REGISTRED,
+	REGISTERED,
 	CONFIRMED,
 	DELIVERED,
 	CANCELED

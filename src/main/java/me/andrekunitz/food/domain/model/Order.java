@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -39,7 +41,8 @@ public class Order {
 	@Embedded
 	private Address address;
 
-	private OrderStatus status;
+	@Enumerated(EnumType.STRING)
+	private OrderStatus status = OrderStatus.REGISTERED;
 
 	@CreationTimestamp
 	private OffsetDateTime registrationTimestamp;
@@ -50,7 +53,7 @@ public class Order {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private PaymentMethod paymentMethods;
+	private PaymentMethod paymentMethod;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -63,4 +66,19 @@ public class Order {
 	@OneToMany(mappedBy = "order")
 	private List<OrderLineItem> items = new ArrayList<>();
 
+	public void calculateTotalPrice() {
+		this.subtotal = getItems().stream()
+				.map(item -> item.getTotalPrice())
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+
+		this.totalPrice = this.subtotal.add(this.deliveryFee);
+	}
+
+	public void setDeliveryFee() {
+		setDeliveryFee(getMerchant().getDeliveryFee());
+	}
+
+	public void assignOrderToItems() {
+		getItems().forEach(item -> item.setOrder(this));
+	}
 }

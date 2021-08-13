@@ -20,6 +20,8 @@ DELETE FROM MERCHANT_PAYMENT_METHOD;
 DELETE FROM USER;
 DELETE FROM USER_GROUP;
 DELETE FROM MERCHANT_RESPONSIBLE_USER;
+DELETE FROM ORDER$;
+DELETE FROM ORDER_LINE_ITEM;
 
 # Restore foreign key checking
 SET FOREIGN_KEY_CHECKS = 1;
@@ -89,3 +91,10 @@ INSERT INTO USER_GROUP (user_id, group_id) VALUES (1, 1), (1, 2), (2, 2);
 INSERT INTO USER (id, `name`, email, password, registration_date) VALUES (5, 'Mary Jane', 'mary@gmail.com', '123', utc_timestamp);
 
 INSERT INTO MERCHANT_RESPONSIBLE_USER (merchant_id, user_id) VALUES (1, 5), (3, 5);
+
+INSERT INTO ORDER$ (id, merchant_id, user_client_id, payment_method_id, address_city_id, address_zip_code, address_street, address_number, address_neighborhood, status, registration_timestamp, subtotal, delivery_fee, total_price) VALUES (1, 1, 1, 1, 1, '38400-000', '1st Street', '500', 'Downtown', 'REGISTERED', utc_timestamp, 298.90, 10, 308.90);
+INSERT INTO ORDER_LINE_ITEM (id, order_id, product_id, quantity, unit_price, total_price, observation) VALUES (2, 1, 2, 2, 110, 220, 'Less spicy, please');
+INSERT INTO ORDER_LINE_ITEM (id, order_id, product_id, quantity, unit_price, total_price, observation) VALUES (1, 1, 1, 1, 78.9, 78.9, null);
+
+INSERT INTO ORDER$ (id, merchant_id, user_client_id, payment_method_id, address_city_id, address_zip_code, address_street, address_number, address_neighborhood, status, registration_timestamp, subtotal, delivery_fee, total_price) VALUES (2, 4, 1, 2, 1, '38400-111', '2st Street', '300','Downtown', 'REGISTERED', utc_timestamp, 79, 0, 79);
+INSERT INTO ORDER_LINE_ITEM (id, order_id, product_id, quantity, unit_price, total_price, observation) VALUES (3, 2, 6, 1, 79, 79, null);
