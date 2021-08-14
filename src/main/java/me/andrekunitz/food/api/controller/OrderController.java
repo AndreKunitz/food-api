@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.api.assembler.OrderModelAssembler;
+import me.andrekunitz.food.api.assembler.OrderSummaryModelAssembler;
 import me.andrekunitz.food.api.model.OrderModel;
+import me.andrekunitz.food.api.model.OrderSummaryModel;
 import me.andrekunitz.food.domain.repository.OrderRepository;
 import me.andrekunitz.food.domain.service.OrderIssuanceService;
 
@@ -21,10 +23,11 @@ public class OrderController {
 	private final OrderRepository orderRepository;
 	private final OrderIssuanceService orderIssuanceService;
 	private final OrderModelAssembler orderModelAssembler;
+	private final OrderSummaryModelAssembler orderSummaryModelAssembler;
 
 	@GetMapping
-	public List<OrderModel> list() {
-		return orderModelAssembler.toCollectionModel(
+	public List<OrderSummaryModel> list() {
+		return orderSummaryModelAssembler.toCollectionModel(
 				orderRepository.findAll());
 	}
 

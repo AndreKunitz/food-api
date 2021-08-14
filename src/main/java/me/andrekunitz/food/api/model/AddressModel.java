@@ -11,5 +11,5 @@ public class AddressModel {
 	private String street;
 	private String number;
 	private String neighborhood;
-	private CityResumeModel city;
+	private CitySummaryModel city;
 }

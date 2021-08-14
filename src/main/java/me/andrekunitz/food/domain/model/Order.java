@@ -11,6 +11,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -51,7 +52,7 @@ public class Order {
 	private OffsetDateTime cancellationTimestamp;
 	private OffsetDateTime deliveredTimestamp;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
 	private PaymentMethod paymentMethod;
 

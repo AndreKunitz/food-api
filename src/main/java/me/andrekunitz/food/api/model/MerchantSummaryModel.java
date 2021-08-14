@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class MerchantResumeModel {
+public class MerchantSummaryModel {
 
 	private Long id;
 	private String name;
