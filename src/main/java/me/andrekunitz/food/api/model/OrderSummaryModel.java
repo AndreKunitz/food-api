@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 public class OrderSummaryModel {
 
-	private Long id;
+	private String code;
 	private BigDecimal subtotal;
 	private BigDecimal deliveryFee;
 	private BigDecimal totalPrice;

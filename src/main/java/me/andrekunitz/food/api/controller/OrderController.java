@@ -44,10 +44,10 @@ public class OrderController {
 				orderRepository.findAll());
 	}
 
-	@GetMapping("{id}")
-	public OrderModel search(@PathVariable Long id) {
+	@GetMapping("{orderCode}")
+	public OrderModel search(@PathVariable String orderCode) {
 		return orderModelAssembler.toModel(
-				orderIssuance.fetchOrFail(id));
+				orderIssuance.fetchOrFail(orderCode));
 	}
 
 	@PostMapping

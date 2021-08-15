@@ -12,20 +12,20 @@ public class OrderFlowService {
 	private final OrderIssuanceService orderIssuance;
 
 	@Transactional
-	public void confirm(Long orderId) {
-		var order = orderIssuance.fetchOrFail(orderId);
+	public void confirm(String orderCode) {
+		var order = orderIssuance.fetchOrFail(orderCode);
 		order.confirm();
 	}
 
 	@Transactional
-	public void cancel(Long orderId) {
-		var order = orderIssuance.fetchOrFail(orderId);
+	public void cancel(String orderCode) {
+		var order = orderIssuance.fetchOrFail(orderCode);
 		order.cancel();
 	}
 
 	@Transactional
-	public void deliver(Long orderId) {
-		var order = orderIssuance.fetchOrFail(orderId);
+	public void deliver(String orderCode) {
+		var order = orderIssuance.fetchOrFail(orderCode);
 		order.deliver();
 	}
 }

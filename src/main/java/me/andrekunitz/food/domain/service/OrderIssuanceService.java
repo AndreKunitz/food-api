@@ -59,8 +59,8 @@ public class OrderIssuanceService {
 		});
 	}
 
-	public Order fetchOrFail(Long id) {
-		return orderRepository.findById(id)
-				.orElseThrow(() -> new OrderNotFoundException(id));
+	public Order fetchOrFail(String orderCode) {
+		return orderRepository.findByCode(orderCode)
+				.orElseThrow(() -> new OrderNotFoundException(orderCode));
 	}
 }

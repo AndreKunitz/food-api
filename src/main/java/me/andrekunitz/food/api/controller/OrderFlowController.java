@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import me.andrekunitz.food.domain.service.OrderFlowService;
 
 @RestController
-@RequestMapping("/orders/{orderId}")
+@RequestMapping("/orders/{orderCode}")
 @RequiredArgsConstructor
 public class OrderFlowController {
 
@@ -20,19 +20,19 @@ public class OrderFlowController {
 
 	@PutMapping("/confirmation")
 	@ResponseStatus(NO_CONTENT)
-	public void confirm(@PathVariable Long orderId) {
-		orderFlow.confirm(orderId);
+	public void confirm(@PathVariable String orderCode) {
+		orderFlow.confirm(orderCode);
 	}
 
 	@PutMapping("/cancellation")
 	@ResponseStatus(NO_CONTENT)
-	public void cancel(@PathVariable Long orderId) {
-		orderFlow.cancel(orderId);
+	public void cancel(@PathVariable String orderCode) {
+		orderFlow.cancel(orderCode);
 	}
 
 	@PutMapping("/delivery")
 	@ResponseStatus(NO_CONTENT)
-	public void deliver(@PathVariable Long orderId) {
-		orderFlow.deliver(orderId);
+	public void deliver(@PathVariable String orderCode) {
+		orderFlow.deliver(orderCode);
 	}
 }
