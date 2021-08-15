@@ -36,4 +36,19 @@ public class OrderLineItem {
 	@JoinColumn(nullable = false)
 	private Product product;
 
+	public void calculateLineItemTotalPrice() {
+		BigDecimal unitPrice = this.getUnitPrice();
+		Integer quantity = this.getQuantity();
+
+		if (unitPrice == null) {
+			unitPrice = BigDecimal.ZERO;
+		}
+
+		if (quantity == null) {
+			quantity = 0;
+		}
+
+		this.setTotalPrice(unitPrice.multiply(new BigDecimal(quantity)));
+	}
+
 }

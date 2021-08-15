@@ -7,6 +7,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -40,7 +41,7 @@ public class Order {
 	private BigDecimal totalPrice;
 
 	@Embedded
-	private Address address;
+	private Address deliveryAddress;
 
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status = OrderStatus.REGISTERED;
@@ -64,22 +65,16 @@ public class Order {
 	@JoinColumn(name = "user_client_id", nullable = false)
 	private User client;
 
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderLineItem> items = new ArrayList<>();
 
-	public void calculateTotalPrice() {
+	public void calculateOrderTotalPrice() {
+		getItems().forEach(OrderLineItem::calculateLineItemTotalPrice);
+
 		this.subtotal = getItems().stream()
 				.map(item -> item.getTotalPrice())
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 
 		this.totalPrice = this.subtotal.add(this.deliveryFee);
-	}
-
-	public void setDeliveryFee() {
-		setDeliveryFee(getMerchant().getDeliveryFee());
-	}
-
-	public void assignOrderToItems() {
-		getItems().forEach(item -> item.setOrder(this));
 	}
 }
