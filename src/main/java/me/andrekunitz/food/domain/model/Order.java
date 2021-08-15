@@ -24,6 +24,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.andrekunitz.food.domain.exception.BusinessException;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -76,5 +77,30 @@ public class Order {
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 
 		this.totalPrice = this.subtotal.add(this.deliveryFee);
+	}
+
+	public void confirm() {
+		setStatus(OrderStatus.CONFIRMED);
+		setConfirmationTimestamp(OffsetDateTime.now());
+	}
+
+	public void deliver() {
+		setStatus(OrderStatus.DELIVERED);
+		setDeliveredTimestamp(OffsetDateTime.now());
+	}
+
+	public void cancel() {
+		setStatus(OrderStatus.CANCELED);
+		setCancellationTimestamp(OffsetDateTime.now());
+	}
+
+	private void setStatus(OrderStatus newStatus) {
+		if (getStatus().cannotChangeTo(newStatus)) {
+			throw new BusinessException(
+					String.format("Status from order %d cannot be altered from %s to %s.",
+							getId(), getStatus().getDescription(), newStatus.getDescription()));
+		}
+
+		this.status = newStatus;
 	}
 }
