@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,6 +36,7 @@ import me.andrekunitz.food.api.assembler.MerchantInputDisassembler;
 import me.andrekunitz.food.api.assembler.MerchantModelAssembler;
 import me.andrekunitz.food.api.model.MerchantModel;
 import me.andrekunitz.food.api.model.input.MerchantInput;
+import me.andrekunitz.food.api.model.view.MerchantView;
 import me.andrekunitz.food.core.validation.ValidationException;
 import me.andrekunitz.food.domain.exception.BusinessException;
 import me.andrekunitz.food.domain.exception.CityNotFoundException;
@@ -55,8 +57,16 @@ public class MerchantController {
 	private final MerchantModelAssembler merchantModelAssembler;
 	private final MerchantInputDisassembler merchantInputDisassembler;
 
+	@JsonView(MerchantView.Summary.class)
 	@GetMapping
-	public List<MerchantModel> list() {
+	public List<MerchantModel> listSummary() {
+		return merchantModelAssembler.toCollectionModel(
+				merchantRepository.findAll());
+	}
+
+	@JsonView(MerchantView.NameOnly.class)
+	@GetMapping(params = "view=name-only")
+	public List<MerchantModel> listNameOnly() {
 		return merchantModelAssembler.toCollectionModel(
 				merchantRepository.findAll());
 	}
