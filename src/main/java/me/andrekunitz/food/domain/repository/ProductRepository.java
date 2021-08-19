@@ -18,6 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	Optional<Product> findById(@Param("merchant") Long merchantId,
 							   @Param("product") Long productId);
 
-	List<Product> findByMerchant(Merchant merchant);
+	List<Product> findAllByMerchant(Merchant merchant);
 
+	@Query("from Product p where p.active = true and p.merchant = :merchant")
+	List<Product> findActiveByMerchant(@Param("merchant") Merchant merchant);
 }

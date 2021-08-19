@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,7 @@ import me.andrekunitz.food.api.assembler.ProductInputDisassembler;
 import me.andrekunitz.food.api.assembler.ProductModelAssembler;
 import me.andrekunitz.food.api.model.ProductModel;
 import me.andrekunitz.food.api.model.input.ProductInput;
+import me.andrekunitz.food.domain.model.Product;
 import me.andrekunitz.food.domain.repository.ProductRepository;
 import me.andrekunitz.food.domain.service.MerchantRegistrationService;
 import me.andrekunitz.food.domain.service.ProductRegistrationService;
@@ -36,11 +38,19 @@ public class ProductController {
 	private final ProductInputDisassembler productInputDisassembler;
 
 	@GetMapping
-	public List<ProductModel> list(@PathVariable Long merchantId) {
+	public List<ProductModel> list(@PathVariable Long merchantId,
+								   @RequestParam(required = false) boolean includeInactives
+	) {
 		var merchant = merchantRegistration.fetchOrFail(merchantId);
+		List<Product> allProducts;
 
-		return productModelAssembler.toCollectionModel(
-				productRepository.findByMerchant(merchant));
+		if (includeInactives) {
+			allProducts = productRepository.findAllByMerchant(merchant);
+		} else {
+			allProducts = productRepository.findActiveByMerchant(merchant);
+		}
+
+		return productModelAssembler.toCollectionModel(allProducts);
 	}
 
 	@GetMapping("{productId}")

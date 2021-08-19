@@ -70,7 +70,7 @@ INSERT INTO PERMISSION$ (id, `name`, description) VALUES (2, 'EDIT_CUISINES', 'P
 
 INSERT INTO MERCHANT_PAYMENT_METHOD (merchant_id, payment_method_id) VALUES (1, 1), (1, 2), (1, 3), (2,3), (3, 2), (3, 3);
 
-INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('Pork with sweet and sour sauce', 'Delicious pork with special sauce', 78.90, 1, 1);
+INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('Pork with sweet and sour sauce', 'Delicious pork with special sauce', 78.90, 0, 1);
 INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('Thai prawns', '16 prawns in hot sauce', 110, 1, 1);
 INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('Spicy salad with grilled meat', 'Leaf salad with fine cuts of grilled beef and our special red pepper sauce', 87.20, 1, 2);
 INSERT INTO PRODUCT (`name`, description, price, active, merchant_id) VALUES ('Garlic Naan', 'Traditional Indian bread with garlic topping', 21, 1, 3);
