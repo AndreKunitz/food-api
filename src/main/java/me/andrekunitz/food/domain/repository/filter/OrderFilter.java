@@ -14,6 +14,7 @@ import lombok.Setter;
 public class OrderFilter {
 
 	private Long clientId;
+
 	private Long merchantId;
 
 	@DateTimeFormat(iso = ISO.DATE_TIME)
