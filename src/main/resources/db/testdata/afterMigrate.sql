@@ -100,3 +100,12 @@ INSERT INTO ORDER_LINE_ITEM (id, order_id, product_id, quantity, unit_price, tot
 
 INSERT INTO ORDER$ (id, code, merchant_id, user_client_id, payment_method_id, address_city_id, address_zip_code, address_street, address_number, address_neighborhood, status, registration_timestamp, subtotal, delivery_fee, total_price) VALUES (2, 'f8d84f84-81bc-403c-8912-aaff73d3fb5b', 4, 1, 2, 1, '38400-111', '2st Street', '300','Downtown', 'REGISTERED', utc_timestamp, 79, 0, 79);
 INSERT INTO ORDER_LINE_ITEM (id, order_id, product_id, quantity, unit_price, total_price, observation) VALUES (3, 2, 6, 1, 79, 79, null);
+
+INSERT INTO ORDER$ (id, code, merchant_id, user_client_id, payment_method_id, address_city_id, address_zip_code, address_street, address_number, address_neighborhood, status, registration_timestamp, confirmation_timestamp, delivered_timestamp, subtotal, delivery_fee, total_price) VALUES (3, 'b5741512-8fbc-47fa-9ac1-b530354fc0ff', 1, 1, 1, 1, '38400-222', '3st Street', '200', 'Downtown', 'REGISTERED', '2019-10-30 21:10:00', '2019-10-30 21:10:45', '2019-10-30 21:55:44', 110, 10, 120);
+INSERT INTO ORDER_LINE_ITEM (id, order_id, product_id, quantity, unit_price, total_price, observation) VALUES (4, 3, 2, 1, 110, 110, null);
+
+INSERT INTO ORDER$ (id, code, merchant_id, user_client_id, payment_method_id, address_city_id, address_zip_code, address_street, address_number, address_neighborhood, status, registration_timestamp, confirmation_timestamp, delivered_timestamp, subtotal, delivery_fee, total_price) VALUES (4, '5c621c9a-ba61-4454-8631-8aabefe58dc2', 1, 2, 1, 1, '38400-800', '4st Street', '900', 'Downtown', 'REGISTERED', '2019-11-02 20:34:04', '2019-11-02 20:35:10', '2019-11-02 21:10:32', 174.4, 5, 179.4);
+INSERT INTO ORDER_LINE_ITEM (id, order_id, product_id, quantity, unit_price, total_price, observation) VALUES (5, 4, 3, 2, 87.2, 174.4, null);
+
+INSERT INTO ORDER$ (id, code, merchant_id, user_client_id, payment_method_id, address_city_id, address_zip_code, address_street, address_number, address_neighborhood, status, registration_timestamp, confirmation_timestamp, delivered_timestamp, subtotal, delivery_fee, total_price) VALUES (5, '8d774bcf-b238-42f3-aef1-5fb388754d63', 1, 3, 2, 1, '38400-200', '5st Street', '930', 'Downtown', 'REGISTERED', '2019-11-02 21:00:30', '2019-11-02 21:01:21', '2019-11-02 21:20:10', 87.2, 10, 97.2);
+INSERT INTO ORDER_LINE_ITEM (id, order_id, product_id, quantity, unit_price, total_price, observation) VALUES (6, 5, 3, 1, 87.2, 87.2, null);

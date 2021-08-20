@@ -1,5 +1,6 @@
 package me.andrekunitz.food.api.controller;
 
+import static me.andrekunitz.food.infrastructure.repository.specification.OrderSpecification.*;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import java.util.List;
@@ -25,6 +26,7 @@ import me.andrekunitz.food.domain.exception.BusinessException;
 import me.andrekunitz.food.domain.exception.EntityNotFoundException;
 import me.andrekunitz.food.domain.model.User;
 import me.andrekunitz.food.domain.repository.OrderRepository;
+import me.andrekunitz.food.domain.repository.filter.OrderFilter;
 import me.andrekunitz.food.domain.service.OrderIssuanceService;
 
 @RestController
@@ -39,9 +41,9 @@ public class OrderController {
 	private final OrderInputDisassembler orderInputDisassembler;
 
 	@GetMapping
-	public List<OrderSummaryModel> list() {
+	public List<OrderSummaryModel> search(OrderFilter filter) {
 		return orderSummaryModelAssembler.toCollectionModel(
-				orderRepository.findAll());
+				orderRepository.findAll(withFilter(filter)));
 	}
 
 	@GetMapping("{orderCode}")
