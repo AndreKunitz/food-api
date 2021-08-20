@@ -13,8 +13,11 @@ public class OrderSpecification {
 
 	public static Specification<Order> withFilter(OrderFilter filters) {
 		return (root, query, builder) -> {
-			root.fetch("merchant").fetch("cuisine");
-			root.fetch("client");
+			// Skip fetch if result type differ, to avoid fetch exception in count query in pagination
+			if (Order.class.equals(query.getResultType())) {
+				root.fetch("merchant").fetch("cuisine");
+				root.fetch("client");
+			}
 
 			var predicates = new ArrayList<Predicate>();
 

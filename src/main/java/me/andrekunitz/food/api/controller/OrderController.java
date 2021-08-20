@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +27,7 @@ import me.andrekunitz.food.api.model.OrderSummaryModel;
 import me.andrekunitz.food.api.model.input.OrderInput;
 import me.andrekunitz.food.domain.exception.BusinessException;
 import me.andrekunitz.food.domain.exception.EntityNotFoundException;
+import me.andrekunitz.food.domain.model.Order;
 import me.andrekunitz.food.domain.model.User;
 import me.andrekunitz.food.domain.repository.OrderRepository;
 import me.andrekunitz.food.domain.repository.filter.OrderFilter;
@@ -41,9 +45,14 @@ public class OrderController {
 	private final OrderInputDisassembler orderInputDisassembler;
 
 	@GetMapping
-	public List<OrderSummaryModel> search(OrderFilter filter) {
-		return orderSummaryModelAssembler.toCollectionModel(
-				orderRepository.findAll(withFilter(filter)));
+	public Page<OrderSummaryModel> search(OrderFilter filter, Pageable pageable) {
+		Page<Order> ordersPage = orderRepository.findAll(withFilter(filter), pageable);
+		List<OrderSummaryModel> orderSummariesModel = orderSummaryModelAssembler
+				.toCollectionModel(ordersPage.getContent());
+		Page<OrderSummaryModel> orderSummariesModelPage = new PageImpl<>(orderSummariesModel,
+				pageable, ordersPage.getTotalElements());
+
+		return orderSummariesModelPage;
 	}
 
 	@GetMapping("{orderCode}")
