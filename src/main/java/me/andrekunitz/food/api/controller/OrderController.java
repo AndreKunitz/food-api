@@ -30,7 +30,7 @@ import me.andrekunitz.food.domain.exception.EntityNotFoundException;
 import me.andrekunitz.food.domain.model.Order;
 import me.andrekunitz.food.domain.model.User;
 import me.andrekunitz.food.domain.repository.OrderRepository;
-import me.andrekunitz.food.domain.repository.filter.OrderFilter;
+import me.andrekunitz.food.domain.filter.OrderFilter;
 import me.andrekunitz.food.domain.service.OrderIssuanceService;
 
 @RestController

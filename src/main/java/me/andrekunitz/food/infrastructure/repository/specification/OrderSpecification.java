@@ -7,7 +7,7 @@ import javax.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
 import me.andrekunitz.food.domain.model.Order;
-import me.andrekunitz.food.domain.repository.filter.OrderFilter;
+import me.andrekunitz.food.domain.filter.OrderFilter;
 
 public class OrderSpecification {
 
@@ -27,13 +27,13 @@ public class OrderSpecification {
 			if (filters.getMerchantId() != null) {
 				predicates.add(builder.equal(root.get("merchant"), filters.getMerchantId()));
 			}
-			if (filters.getRegistrationDateBegin() != null) {
+			if (filters.getDateTimeBeginning() != null) {
 				predicates.add(builder.greaterThanOrEqualTo(root.get("registrationTimestamp"),
-						filters.getRegistrationDateBegin()));
+						filters.getDateTimeBeginning()));
 			}
-			if (filters.getRegistrationDateEnd() != null) {
+			if (filters.getDateTimeEnding() != null) {
 				predicates.add(builder.lessThanOrEqualTo(root.get("registrationTimestamp"),
-						filters.getRegistrationDateEnd()));
+						filters.getDateTimeEnding()));
 			}
 
 			return builder.and(predicates.toArray(new Predicate[0]));

@@ -1,4 +1,4 @@
-package me.andrekunitz.food.domain.repository.filter;
+package me.andrekunitz.food.domain.filter;
 
 import static org.springframework.format.annotation.DateTimeFormat.*;
 
@@ -18,9 +18,9 @@ public class OrderFilter {
 	private Long merchantId;
 
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private OffsetDateTime registrationDateBegin;
+	private OffsetDateTime dateTimeBeginning;
 
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private OffsetDateTime registrationDateEnd;
+	private OffsetDateTime dateTimeEnding;
 
 }
