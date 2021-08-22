@@ -1,4 +1,4 @@
-package me.andrekunitz.food.infrastructure.repository.service;
+package me.andrekunitz.food.infrastructure.repository.service.query;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,17 +25,23 @@ public class SaleQueryServiceImpl implements SaleQueryService {
 	public static final String REGISTRATION_TIMESTAMP = "registrationTimestamp";
 
 	/**
-	* Criteria implementation that maps the following query:
+	* <h2>Criteria implementation that maps the following SQL query:</h2>
 	*
-	* SELECT DATE(CURRENT_TZ(o.registration_timestamp, '+00:00', '-03:00')) as date,
+	*{@code
+	* SELECT
+	*   DATE(CURRENT_TZ(o.registration_timestamp, '+00:00', '-03:00')) as date,
 	* 	COUNT(o.id) as total_sale,.
 	* 	SUM(o.total_price) as total_billed
 	*
 	* FROM Order o
 	*
 	* WHERE o.status in ('CONFIRMED', 'DELIVERED')
+	*	AND o.merchant_id = ?
+	*	AND o.registration_timestamp>=?
+	*	AND o.registration_timestamp<=?
 	*
 	* GROUP BY DATE(o.registration_timestamp)
+	* }
 	*/
 	@Override
 	public List<DailySale> searchDailySale(DailySaleFilter filter, String timeOffset) {
